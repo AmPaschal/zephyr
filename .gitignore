@@ -91,3 +91,7 @@ ModulesMaintainers.txt
 Nits.txt
 Pylint.txt
 YAMLLint.txt
+
+# CBMC Files
+
+report/
