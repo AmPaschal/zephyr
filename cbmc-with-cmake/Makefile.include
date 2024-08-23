@@ -7,7 +7,6 @@ ROUTE_DRIVER ?= ROUTING_CONF_RPL_LITE
 
 C_INC ?=
 
-
 C_DEF = \
 	-DWIN32 \
 	-DWINVER=0x400 \
@@ -23,6 +22,7 @@ C_DEF = \
 	-D'$(MAC_DRIVER)=1' \
 	-D'$(NET_DRIVER)=1' \
 	-D'$(ROUTE_DRIVER)=1' \
+	$(shell sed -e 's/^/-D/' -e 's/="/ "/' prj.conf)
 
 C_CBMCFLAGS = \
 	--object-bits $(OBJ_BITS) \
