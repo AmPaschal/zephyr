@@ -29,6 +29,20 @@ C_CBMCFLAGS = \
 	--32 \
 	--bounds-check \
 	--pointer-check \
+	--unsigned-overflow-check \
+	--bounds-check \
+	--pointer-check \
+	--div-by-zero-check \
+	--float-div-by-zero-check \
+	--signed-overflow-check \
+	--pointer-overflow-check \
+	--conversion-check \
+	--undefined-shift-check \
+	--float-overflow-check \
+	--nan-check \
+	--pointer-primitive-check \
+	--conversion-check \
+	--drop-unused-functions \
 
 IGNORE_OPTIONS = -c|-o|-mfp16-format|-fno-reorder-functions|-fno-printf-return-value|-fno-defer-pop|--specs|--param=min-pagesize
 
