@@ -22,6 +22,7 @@ extern "C" {
 
 static inline int *z_errno(void)
 {
+	int errno;
 	return &errno;
 }
 

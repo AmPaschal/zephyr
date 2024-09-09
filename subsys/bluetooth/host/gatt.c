@@ -4499,7 +4499,7 @@ static int gatt_read_group(struct bt_conn *conn,
 			     BT_ATT_CHAN_OPT(params));
 }
 
-static void gatt_find_info_rsp(struct bt_conn *conn, int err,
+void gatt_find_info_rsp(struct bt_conn *conn, int err,
 			       const void *pdu, uint16_t length,
 			       void *user_data)
 {
