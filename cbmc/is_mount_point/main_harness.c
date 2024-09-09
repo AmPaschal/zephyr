@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libgen.h>
 
 #define PATH_MAX        4096	/* # chars in a path name including nul */
 
