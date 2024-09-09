@@ -313,8 +313,8 @@ static bool le_sc_supported(void)
 
 static const struct bt_conn_auth_cb *latch_auth_cb(struct bt_smp *smp)
 {
-	(void)atomic_ptr_cas(&smp->auth_cb, BT_SMP_AUTH_CB_UNINITIALIZED,
-			     (atomic_ptr_val_t)bt_auth);
+	// (void)atomic_ptr_cas(&smp->auth_cb, BT_SMP_AUTH_CB_UNINITIALIZED,
+	// 		     (atomic_ptr_val_t)bt_auth);
 
 	return atomic_ptr_get(&smp->auth_cb);
 }
@@ -1829,7 +1829,7 @@ static void smp_send(struct bt_smp *smp, struct net_buf *buf,
 	k_work_reschedule(&smp->work, SMP_TIMEOUT);
 }
 
-static int smp_error(struct bt_smp *smp, uint8_t reason)
+int smp_error(struct bt_smp *smp, uint8_t reason)
 {
 	struct bt_smp_pairing_fail *rsp;
 	struct net_buf *buf;
@@ -1860,7 +1860,7 @@ static int smp_error(struct bt_smp *smp, uint8_t reason)
 		bt_conn_disconnect(smp->chan.chan.conn, BT_HCI_ERR_AUTH_FAIL);
 		return 0;
 	}
-
+ 
 	buf = smp_create_pdu(smp, BT_SMP_CMD_PAIRING_FAIL, sizeof(*rsp));
 	if (!buf) {
 		return -ENOBUFS;
