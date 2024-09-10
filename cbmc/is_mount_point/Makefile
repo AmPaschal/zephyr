@@ -11,7 +11,7 @@ LINK =
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1
+H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset strcmp.0:10 --unwindset strlen.0:10
 
 # Extra header defintiions to be passed during compilation
 H_DEF = 

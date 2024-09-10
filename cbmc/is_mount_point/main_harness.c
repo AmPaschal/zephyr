@@ -10,9 +10,15 @@ char* dirname(char* path) {
 
 	uint16_t size;
 
-	__CPROVER_assume(size <= PATH_MAX);
+	__CPROVER_assume(size <= PATH_MAX && size > 0);
 
 	char* ret = malloc(sizeof(char) * size);
+
+	// Determine if we need to add null character:
+
+	ret[size - 1] = '\0';
+
+	return ret;
 }
 
 bool is_mount_point(const char *path)
@@ -36,7 +42,15 @@ int harness() {
 
 	uint16_t size;
 
-	const char* path = malloc(sizeof(uint16_t) * size);
+	// Size will not be zero:
+
+	__CPROVER_assume(size > 0);
+
+	char* path = malloc(sizeof(char) * size);
+
+	// Need to add null character to string:
+
+	path[size - 1] = '\0';
 
 	bool res = is_mount_point(path);
 }
