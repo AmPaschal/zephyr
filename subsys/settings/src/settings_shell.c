@@ -160,7 +160,7 @@ static int cmd_read(const struct shell *shell_ptr, size_t argc, char *argv[])
 	return err;
 }
 
-static int cmd_write(const struct shell *shell_ptr, size_t argc, char *argv[])
+int cmd_write(const struct shell *shell_ptr, size_t argc, char *argv[])
 {
 	int err;
 	uint8_t buffer[CONFIG_SHELL_CMD_BUFF_SIZE / 2];
