@@ -60,6 +60,8 @@ GOTO_CC = goto-cc
 GOTO_INSTRUMENT = goto-instrument
 GOTO_ANALYZER = goto-analyzer
 VIEWER = cbmc-viewer
+BOARD ?= nrf5340dk/nrf5340/cpuapp
+RUN_CMAKE = 1
 
 # ____________________________________________________________________
 # Variables
@@ -117,7 +119,7 @@ generate_headers:
 	mkdir -p build/cbmc
 	mkdir -p build/gotos
 	mkdir -p build/reports
-	$(CMAKE_COMMAND) . -DBOARD=nrf5340dk/nrf5340/cpuapp -Bbuild -G "Unix Makefiles"
+	$(CMAKE_COMMAND) . -DBOARD=$(BOARD) -Bbuild -G "Unix Makefiles"
 	cd build && $(MAKE) $(MAKESILENT) -f Makefile kernel
 .PHONY: generate_headers
 
@@ -128,7 +130,7 @@ build/gotos/%.goto: %.c
 
 # Build the harness
 $(ENTRY)_harness.goto: EXTRA_GENERATED_COMPILER_ARGS = $(shell cat build/compile_commands.json | jq '.[] | select(.file | endswith("$(ENTRY)_harness.c")) | .command' |  awk -F' -' '{for(i=2; i<=NF; i++) print "-" $$i}' |  grep -v -E '($(IGNORE_OPTIONS))' | tr '\n' ' ')
-$(ENTRY)_harness.goto: $(ENTRY)_harness.c $(H_GENERATE_HEADER) generate_headers
+$(ENTRY)_harness.goto: $(ENTRY)_harness.c $(H_GENERATE_HEADER) $(if $(filter 1,$(RUN_CMAKE)), generate_headers)
 	$(GOTO_CC) -c -o build/$@ $(INC) $(CFLAGS) $(EXTRA_GENERATED_COMPILER_ARGS) $(ENTRY)_harness.c
 
 # Link harness and linked sources
