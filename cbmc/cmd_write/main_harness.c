@@ -1,6 +1,11 @@
 #include <stdint.h>
 
+#include "zephyr/settings/settings.h"
 #include "zephyr/shell/shell.h"
+
+extern struct settings_store *settings_save_dst;
+
+void shell_error_impl(const struct shell *sh, const char *fmt, ...) {}
 
 char *valid_string() {
 
@@ -27,9 +32,15 @@ char *valid_string() {
 
 int harness() {
 
+	settings_store_init();
+	
 	// Model input arguments:
 
 	size_t argc;
+
+	// Place a limit on the number of arguments:
+
+	__CPROVER_assume(argc < 10 && argc > 0);
 
 	// Create argument array:
 
