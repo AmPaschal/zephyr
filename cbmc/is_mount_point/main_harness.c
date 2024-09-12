@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #define PATH_MAX        4096	/* # chars in a path name including nul */
@@ -26,13 +27,17 @@ bool is_mount_point(const char *path)
 	char dir_path[PATH_MAX];
 	size_t len;
 
-	len = strlen(path);
-	if (len >=  sizeof(dir_path)) {
-		return false;
-	}
+	// sprintf(dir_path, "%s", path);
 
-	memcpy(dir_path, path, len);
-	dir_path[len] = '\0';
+	strcpy(dir_path, path);
+
+	// len = strlen(path);
+	// if (len >=  sizeof(dir_path)) {
+	// 	return false;
+	// }
+
+	// memcpy(dir_path, path, len);
+	// dir_path[len] = '\0';
 	return strcmp(dirname(dir_path), "/") == 0;
 }
 
