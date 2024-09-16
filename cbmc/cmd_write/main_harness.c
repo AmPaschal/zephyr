@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "zephyr/settings/settings.h"
 #include "zephyr/shell/shell.h"
@@ -6,6 +7,9 @@
 extern struct settings_store *settings_save_dst;
 
 void shell_error_impl(const struct shell *sh, const char *fmt, ...) {}
+
+int dummy_csi_save(struct settings_store *cs, const char *name,
+			const char *value, size_t val_len) {}
 
 char *valid_string() {
 
@@ -15,7 +19,7 @@ char *valid_string() {
 
 	// Won't be zero:
 
-	__CPROVER_assume(size > 0);
+	__CPROVER_assume(size > 0 && size < 10);
 
 	// Allocate data:
 
@@ -34,13 +38,33 @@ int harness() {
 
 	settings_store_init();
 	
+	// Model global settings:
+
+	settings_save_dst = malloc(sizeof(struct settings_store));
+	__CPROVER_assume(settings_save_dst != NULL);
+	// settings_save_dst->cs_itf = malloc(sizeof(struct settings_store_itf));
+
+	// Create settings_store_itf struct:
+
+	struct settings_store_itf *itfs = malloc(sizeof(struct settings_store_itf));
+
+	__CPROVER_assume(itfs != NULL);
+
+	// Assign dummy function:
+
+	itfs->csi_save = dummy_csi_save;
+
+	// Attach itf struct to global settings store:
+
+	settings_save_dst->cs_itf = itfs;
+
 	// Model input arguments:
 
 	size_t argc;
 
 	// Place a limit on the number of arguments:
 
-	__CPROVER_assume(argc < 10 && argc > 0);
+	__CPROVER_assume(argc < 10 && argc > 2);
 
 	// Create argument array:
 
