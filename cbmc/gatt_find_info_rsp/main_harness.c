@@ -7,6 +7,16 @@
 uint8_t dummy(struct bt_conn *conn, const struct bt_gatt_attr *attr,
 					   struct bt_gatt_discover_params *params) {}
 
+uint8_t bt_gatt_discover_func(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+			      struct bt_gatt_discover_params *params) {
+	uint8_t random;
+
+	return random;
+}
+
+void gatt_discover_next(struct bt_conn *conn, uint16_t last_handle,
+			struct bt_gatt_discover_params *params) {}
+
 int harness() {
 
 	// Harness input variables:
@@ -29,7 +39,7 @@ int harness() {
 
 	// Define dummy function:
 
-	user_data.func = dummy;
+	user_data.func = bt_gatt_discover_func;
 
 	gatt_find_info_rsp(&conn, err, &pdu, length, &user_data);
 }

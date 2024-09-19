@@ -3771,7 +3771,7 @@ int bt_gatt_exchange_mtu(struct bt_conn *conn,
 	return err;
 }
 
-static void gatt_discover_next(struct bt_conn *conn, uint16_t last_handle,
+void gatt_discover_next(struct bt_conn *conn, uint16_t last_handle,
 			       struct bt_gatt_discover_params *params)
 {
 	/* Skip if last_handle is not set */
