@@ -4,6 +4,9 @@
 #include "host/att_internal.h"
 #include "zephyr/bluetooth/gatt.h"
 
+uint8_t dummy(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+					   struct bt_gatt_discover_params *params) {}
+
 int harness() {
 
 	// Harness input variables:
@@ -23,6 +26,10 @@ int harness() {
 	// Define an unconstrained bt_gatt_discover_params (gets copied internally)
 
 	struct bt_gatt_discover_params user_data;
+
+	// Define dummy function:
+
+	user_data.func = dummy;
 
 	gatt_find_info_rsp(&conn, err, &pdu, length, &user_data);
 }
