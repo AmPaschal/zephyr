@@ -74,7 +74,7 @@ struct bt_att_info_128 {
 #define BT_ATT_OP_FIND_INFO_RSP			0x05
 struct bt_att_find_info_rsp {
 	uint8_t  format;
-	uint8_t  info[0];
+	uint8_t  *info;
 } __packed;
 
 /* Find By Type Value Request */

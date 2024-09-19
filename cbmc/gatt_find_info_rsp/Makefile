@@ -1,6 +1,6 @@
 # Defines the root of the project.
 # Be aware of how many directories deep you go!
-ROOT = /home/owen/zephyrproject/zephyr
+ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
 
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
@@ -11,7 +11,7 @@ LINK = $(ROOT)/subsys/bluetooth/host/gatt.c
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static -z3 --unwind 1 --unwindset gatt_find_info_rsp.12:10
+H_CBMCFLAGS = --nondet-static --unwindset gatt_find_info_rsp.12:10
 
 # Extra header defintiions to be passed during compilation
 H_DEF = -DCONFIG_BT_ID_MAX=62 -DCONFIG_BT_MAX_CONN=62 -DCONFIG_BT_GATT_CLIENT=1 -DCONFIG_BT_MAX_PAIRED=62 -DCONFIG_BT_BUF_ACL_RX_SIZE=255 -DCONFIG_BT_L2CAP_TX_MTU=247
