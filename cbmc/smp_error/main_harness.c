@@ -20,6 +20,8 @@
 #include "l2cap_internal.h"
 #include "smp.h"
 
+void smp_pairing_complete(struct bt_smp *smp, uint8_t status) {}
+
 enum {
 	SMP_FLAG_CFM_DELAYED,   /* if confirm should be send when TK is valid */
 	SMP_FLAG_ENC_PENDING,   /* if waiting for an encryption change event */

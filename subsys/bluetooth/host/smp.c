@@ -679,7 +679,7 @@ static bool update_debug_keys_check(struct bt_smp *smp)
 #if defined(CONFIG_BT_PRIVACY) || defined(CONFIG_BT_SIGNING) || \
 	!defined(CONFIG_BT_SMP_SC_PAIR_ONLY)
 /* For TX callbacks */
-static void smp_pairing_complete(struct bt_smp *smp, uint8_t status);
+void smp_pairing_complete(struct bt_smp *smp, uint8_t status);
 #if defined(CONFIG_BT_CLASSIC)
 static void smp_pairing_br_complete(struct bt_smp_br *smp, uint8_t status);
 #endif
@@ -1709,7 +1709,7 @@ static uint8_t hci_err_get(enum bt_security_err err)
 /* Note: This function not only does set the status but also calls smp_reset
  * at the end which clears any flags previously set.
  */
-static void smp_pairing_complete(struct bt_smp *smp, uint8_t status)
+void smp_pairing_complete_blah(struct bt_smp *smp, uint8_t status)
 {
 	struct bt_conn *conn = smp->chan.chan.conn;
 
