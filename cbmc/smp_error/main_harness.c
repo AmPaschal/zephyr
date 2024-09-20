@@ -22,6 +22,15 @@
 
 void smp_pairing_complete(struct bt_smp *smp, uint8_t status) {}
 
+void *net_buf_simple_add(struct net_buf_simple *buf, size_t len) {
+
+	// Return unconstrained bt_smp_hdr struct:
+
+	struct bt_smp_hdr* res = (struct bt_smp_hdr*)malloc(sizeof(struct bt_smp_hdr));
+
+	return res;
+}
+
 enum {
 	SMP_FLAG_CFM_DELAYED,   /* if confirm should be send when TK is valid */
 	SMP_FLAG_ENC_PENDING,   /* if waiting for an encryption change event */
