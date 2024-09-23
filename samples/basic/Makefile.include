@@ -197,7 +197,7 @@ report: cbmc.xml property.xml coverage.xml
 
 
 
-report-print: ERROR = $(shell cat build/report/json/viewer-result.json | jq --arg key "viewer-result" '.[$$key].results | add' | wc -l | xargs -I {} expr {} - 2 | awk '{print ($$1>0) ? $$1 : 0}')
+report-print: ERROR = $(shell cat build/report/json/viewer-result.json | jq --arg key "viewer-result" '.[$$key].results.false | length')
 report-print: COVERAGE = $(shell cat build/report/json/viewer-coverage.json | jq --arg key "viewer-coverage" '.[$$key].overall_coverage.percentage' | xargs -I {} echo "{} * 100" | bc)
 report-print: report
 	@title="CBMC Harness Report"; \
