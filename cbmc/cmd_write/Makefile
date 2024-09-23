@@ -11,10 +11,10 @@ LINK = $(ROOT)/subsys/settings/src/settings_shell.c $(ROOT)/lib/utils/hex.c $(RO
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset harness.0:10 --unwindset strcmp.0:10 --unwindset strlen.0:10 --unwindset hex2bin.0:10
+H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset harness.0:10 --unwindset strcmp.0:20 --unwindset strlen.0:20 --unwindset hex2bin.0:20
 
 # Extra header defintiions to be passed during compilation
-H_DEF = 
+H_DEF = -DCONFIG_SHELL_CMD_BUFF_SIZE=4
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \

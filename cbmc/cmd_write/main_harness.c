@@ -19,7 +19,7 @@ char *valid_string() {
 
 	// Won't be zero:
 
-	__CPROVER_assume(size > 0 && size < 10);
+	__CPROVER_assume(size > 0 && size < 20);
 
 	// Allocate data:
 
@@ -64,7 +64,7 @@ int harness() {
 
 	// Place a limit on the number of arguments:
 
-	__CPROVER_assume(argc < 10 && argc > 2);
+	__CPROVER_assume(argc < 10 && argc > 1);
 
 	// Create argument array:
 
