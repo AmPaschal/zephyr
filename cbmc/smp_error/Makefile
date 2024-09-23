@@ -11,7 +11,7 @@ LINK = $(ROOT)/subsys/bluetooth/host/smp.c $(ROOT)/subsys/bluetooth/host/l2cap.c
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1
+H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset bt_conn_ref.0:10
 
 # Extra header defintiions to be passed during compilation
 H_DEF = -DCONFIG_BT_ID_MAX=4 -DCONFIG_BT_MAX_CONN=10 -DCONFIG_BT_SMP=1 -DCONFIG_BT_CONN_TX_USER_DATA_SIZE=50

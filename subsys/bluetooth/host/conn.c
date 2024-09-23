@@ -1572,7 +1572,7 @@ struct net_buf *bt_conn_create_pdu_timeout(struct net_buf_pool *pool,
 #if defined(CONFIG_BT_CONN)
 		pool = &acl_tx_pool;
 #else
-		return NULL;
+		// return NULL;
 #endif /* CONFIG_BT_CONN */
 	}
 

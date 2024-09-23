@@ -31,6 +31,29 @@ void *net_buf_simple_add(struct net_buf_simple *buf, size_t len) {
 	return res;
 }
 
+struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool, k_timeout_t timeout) {
+
+	// Allocate buffer:
+
+	struct net_buf *buf = (struct net_buf *)malloc(sizeof(struct net_buf));
+
+	return buf;
+}
+
+void net_buf_simple_reserve(struct net_buf_simple *buf, size_t reserve) {
+
+	buf->data = buf->__buf + reserve;
+}
+
+struct net_buf *bt_l2cap_create_pdu_timeout(struct net_buf_pool *pool, size_t reserve, k_timeout_t timeout) {
+
+	// Return new allocated buffer:
+
+	k_timeout_t val;
+
+	return net_buf_alloc_fixed(NULL, val);
+}
+
 enum {
 	SMP_FLAG_CFM_DELAYED,   /* if confirm should be send when TK is valid */
 	SMP_FLAG_ENC_PENDING,   /* if waiting for an encryption change event */
