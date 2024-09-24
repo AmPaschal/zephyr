@@ -35,7 +35,7 @@ static K_FIFO_DEFINE(tx_queue);
 #define BLUETOOTH_IN_EP_ADDR		0x82
 
 /* HCI RX/TX threads */
-static K_KERNEL_STACK_DEFINE(rx_thread_stack, CONFIG_BT_HCI_TX_STACK_SIZE);
+static K_KERNEL_STACK_DEFINE(rx_thread_stack, 640);
 static struct k_thread rx_thread_data;
 static K_KERNEL_STACK_DEFINE(tx_thread_stack, 512);
 static struct k_thread tx_thread_data;
@@ -412,7 +412,7 @@ static struct bt_hci_raw_cmd_ext cmd_ext[] = {
 			   vs_set_usb_transport_mode),
 };
 
-static int bluetooth_class_handler(struct usb_setup_packet *setup,
+int bluetooth_class_handler(struct usb_setup_packet *setup,
 				   int32_t *len, uint8_t **data)
 {
 	struct net_buf *buf;
