@@ -17,6 +17,7 @@
 #include "zephyr/usb/usb_ch9.h"
 
 void harness() {
+
     struct usb_setup_packet setup;
 
     int32_t len;

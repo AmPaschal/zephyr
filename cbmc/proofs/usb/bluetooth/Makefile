@@ -17,7 +17,7 @@ H_CBMCFLAGS = --nondet-static --unwind 1
 H_DEF = 
 
 # Extra CBMC includes to be passed during compilation
-H_INC = 
+H_INC = -I$(ROOT)/subsys/usb/device
 
 # Include our special build file
 include ../../../Makefile.include
