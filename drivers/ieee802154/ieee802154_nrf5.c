@@ -460,7 +460,7 @@ free_nrf_ack:
 	return err;
 }
 
-static void nrf5_tx_started(const struct device *dev,
+void nrf5_tx_started(const struct device *dev,
 			    struct net_pkt *pkt,
 			    struct net_buf *frag)
 {
@@ -560,7 +560,7 @@ static bool nrf5_tx_at(struct nrf5_802154_data *nrf5_radio, struct net_pkt *pkt,
 }
 #endif /* CONFIG_NET_PKT_TXTIME */
 
-static int nrf5_tx(const struct device *dev,
+int nrf5_tx(const struct device *dev,
 		   enum ieee802154_tx_mode mode,
 		   struct net_pkt *pkt,
 		   struct net_buf *frag)
