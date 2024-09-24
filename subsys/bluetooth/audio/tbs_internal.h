@@ -20,35 +20,34 @@
 #include <zephyr/net/buf.h>
 #include <zephyr/types.h>
 
-#define BT_TBS_MAX_UCI_SIZE                        6
-#define BT_TBS_MIN_URI_LEN                         3 /* a:b */
-#define BT_TBS_FREE_CALL_INDEX                     0
+#define BT_TBS_MAX_UCI_SIZE    6
+#define BT_TBS_MIN_URI_LEN     3 /* a:b */
+#define BT_TBS_FREE_CALL_INDEX 0
 
 /* Call Control Point Opcodes */
-#define BT_TBS_CALL_OPCODE_ACCEPT                  0x00
-#define BT_TBS_CALL_OPCODE_TERMINATE               0x01
-#define BT_TBS_CALL_OPCODE_HOLD                    0x02
-#define BT_TBS_CALL_OPCODE_RETRIEVE                0x03
-#define BT_TBS_CALL_OPCODE_ORIGINATE               0x04
-#define BT_TBS_CALL_OPCODE_JOIN                    0x05
+#define BT_TBS_CALL_OPCODE_ACCEPT    0x00
+#define BT_TBS_CALL_OPCODE_TERMINATE 0x01
+#define BT_TBS_CALL_OPCODE_HOLD      0x02
+#define BT_TBS_CALL_OPCODE_RETRIEVE  0x03
+#define BT_TBS_CALL_OPCODE_ORIGINATE 0x04
+#define BT_TBS_CALL_OPCODE_JOIN      0x05
 
 /* Local Control Points - Used to do local control operations but still being
  * able to determine if it is a local or remote operation
  */
-#define BT_TBS_LOCAL_OPCODE_ANSWER                 0x80
-#define BT_TBS_LOCAL_OPCODE_HOLD                   0x81
-#define BT_TBS_LOCAL_OPCODE_RETRIEVE               0x82
-#define BT_TBS_LOCAL_OPCODE_TERMINATE              0x83
-#define BT_TBS_LOCAL_OPCODE_INCOMING               0x84
-#define BT_TBS_LOCAL_OPCODE_SERVER_TERMINATE       0x85
+#define BT_TBS_LOCAL_OPCODE_ANSWER           0x80
+#define BT_TBS_LOCAL_OPCODE_HOLD             0x81
+#define BT_TBS_LOCAL_OPCODE_RETRIEVE         0x82
+#define BT_TBS_LOCAL_OPCODE_TERMINATE        0x83
+#define BT_TBS_LOCAL_OPCODE_INCOMING         0x84
+#define BT_TBS_LOCAL_OPCODE_SERVER_TERMINATE 0x85
 
 #define FIRST_PRINTABLE_ASCII_CHAR ' ' /* space */
 
 #define BT_TBS_CALL_FLAG_SET_INCOMING(flag) (flag &= ~BT_TBS_CALL_FLAG_OUTGOING)
 #define BT_TBS_CALL_FLAG_SET_OUTGOING(flag) (flag |= BT_TBS_CALL_FLAG_OUTGOING)
 
-const char *parse_string_value(const void *data, uint16_t length,
-				      uint16_t max_len);
+const char *parse_string_value(const void *data, uint16_t length, uint16_t max_len);
 
 static inline const char *bt_tbs_state_str(uint8_t state)
 {
@@ -185,14 +184,13 @@ static inline const char *bt_tbs_term_reason_str(uint8_t reason)
  * @return true If the above is true
  * @return false If the above is not true
  */
-static inline bool bt_tbs_valid_uri(const char *uri, size_t len)
+bool bt_tbs_valid_uri(const char *uri, size_t len)
 {
 	if (!uri) {
 		return false;
 	}
 
-	if (len > CONFIG_BT_TBS_MAX_URI_LENGTH ||
-	    len < BT_TBS_MIN_URI_LEN) {
+	if (len > CONFIG_BT_TBS_MAX_URI_LENGTH || len < BT_TBS_MIN_URI_LEN) {
 		return false;
 	} else if (uri[0] < FIRST_PRINTABLE_ASCII_CHAR) {
 		/* Invalid first char */
@@ -295,22 +293,21 @@ struct bt_tbs_in_uri {
 #if defined(CONFIG_BT_TBS_CLIENT)
 
 /* Features which may require long string reads */
-#if defined(CONFIG_BT_TBS_CLIENT_BEARER_PROVIDER_NAME) || \
-	defined(CONFIG_BT_TBS_CLIENT_BEARER_UCI) || \
-	defined(CONFIG_BT_TBS_CLIENT_BEARER_URI_SCHEMES_SUPPORTED_LIST) || \
-	defined(CONFIG_BT_TBS_CLIENT_INCOMING_URI) || \
-	defined(CONFIG_BT_TBS_CLIENT_INCOMING_CALL) || \
-	defined(CONFIG_BT_TBS_CLIENT_CALL_FRIENDLY_NAME) || \
+#if defined(CONFIG_BT_TBS_CLIENT_BEARER_PROVIDER_NAME) ||                                          \
+	defined(CONFIG_BT_TBS_CLIENT_BEARER_UCI) ||                                                \
+	defined(CONFIG_BT_TBS_CLIENT_BEARER_URI_SCHEMES_SUPPORTED_LIST) ||                         \
+	defined(CONFIG_BT_TBS_CLIENT_INCOMING_URI) ||                                              \
+	defined(CONFIG_BT_TBS_CLIENT_INCOMING_CALL) ||                                             \
+	defined(CONFIG_BT_TBS_CLIENT_CALL_FRIENDLY_NAME) ||                                        \
 	defined(CONFIG_BT_TBS_CLIENT_BEARER_LIST_CURRENT_CALLS)
 #define BT_TBS_CLIENT_INST_READ_BUF_SIZE (BT_ATT_MAX_ATTRIBUTE_LEN)
 #else
 /* Need only be the size of call state reads which is the largest of the
  * remaining characteristic values
  */
-#define BT_TBS_CLIENT_INST_READ_BUF_SIZE \
-		MIN(BT_ATT_MAX_ATTRIBUTE_LEN, \
-			(CONFIG_BT_TBS_CLIENT_MAX_CALLS \
-			* sizeof(struct bt_tbs_client_call_state)))
+#define BT_TBS_CLIENT_INST_READ_BUF_SIZE                                                           \
+	MIN(BT_ATT_MAX_ATTRIBUTE_LEN,                                                              \
+	    (CONFIG_BT_TBS_CLIENT_MAX_CALLS * sizeof(struct bt_tbs_client_call_state)))
 #endif /* defined(CONFIG_BT_TBS_CLIENT_BEARER_LIST_CURRENT_CALLS) */
 
 struct bt_tbs_instance {
@@ -324,8 +321,8 @@ struct bt_tbs_instance {
 #if defined(CONFIG_BT_TBS_CLIENT_BEARER_URI_SCHEMES_SUPPORTED_LIST)
 	uint16_t uri_list_handle;
 #endif /* defined(CONFIG_BT_TBS_CLIENT_BEARER_URI_SCHEMES_SUPPORTED_LIST) */
-#if defined(CONFIG_BT_TBS_CLIENT_READ_BEARER_SIGNAL_INTERVAL) \
-|| defined(CONFIG_BT_TBS_CLIENT_SET_BEARER_SIGNAL_INTERVAL)
+#if defined(CONFIG_BT_TBS_CLIENT_READ_BEARER_SIGNAL_INTERVAL) ||                                   \
+	defined(CONFIG_BT_TBS_CLIENT_SET_BEARER_SIGNAL_INTERVAL)
 	uint16_t signal_interval_handle;
 #endif /* defined(CONFIG_BT_TBS_CLIENT_READ_BEARER_SIGNAL_INTERVAL) */
 /* || defined(CONFIG_BT_TBS_CLIENT_SET_BEARER_SIGNAL_INTERVAL) */
