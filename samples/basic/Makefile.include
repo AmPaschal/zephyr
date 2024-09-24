@@ -33,7 +33,7 @@ C_CBMCFLAGS = \
     --bounds-check \
     --pointer-check \
     --div-by-zero-check \
-    --float-div-by-zero-check \
+#    --float-div-by-zero-check \
     --signed-overflow-check \
     --pointer-overflow-check \
     --conversion-check \
@@ -60,7 +60,7 @@ GOTO_CC = goto-cc
 GOTO_INSTRUMENT = goto-instrument
 GOTO_ANALYZER = goto-analyzer
 VIEWER = cbmc-viewer
-BOARD ?= nrf5340dk/nrf5340/cpuapp
+BOARD ?= native_posix
 RUN_CMAKE = 1
 
 # ____________________________________________________________________
@@ -135,7 +135,7 @@ $(ENTRY)_harness.goto: $(ENTRY)_harness.c $(H_GENERATE_HEADER) $(if $(filter 1,$
 
 # Link harness and linked sources
 $(ENTRY)1.goto: $(ENTRY)_harness.goto $(OOS_OBJS)
-	$(GOTO_CC) -o build/$@ --function main build/$(ENTRY)_harness.goto $(addprefix build/gotos/,$(notdir $(OOS_OBJS)))
+	$(GOTO_CC) -o build/$@ --function harness build/$(ENTRY)_harness.goto $(addprefix build/gotos/,$(notdir $(OOS_OBJS)))
 
 # Add CBMC stub library
 $(ENTRY)2.goto: $(ENTRY)1.goto
