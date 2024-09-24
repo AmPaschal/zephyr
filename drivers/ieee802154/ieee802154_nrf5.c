@@ -570,7 +570,7 @@ int nrf5_tx(const struct device *dev,
 	uint8_t *payload = frag->data;
 	bool ret = true;
 
-	if (payload_len > IEEE802154_MTU) {
+	if (payload_len > IEEE802154_MTU) {  // No check to ensure payload length is large enough
 		LOG_ERR("Payload too large: %d", payload_len);
 		return -EMSGSIZE;
 	}
