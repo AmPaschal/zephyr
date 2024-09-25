@@ -67,6 +67,12 @@ int fs_readmount(int *index, const char **name) {
 	__CPROVER_assume(0 < ssize && ssize < 10);
 
 	*name = malloc(ssize);
+
+	// Return unconstrained int
+
+	int res;
+
+	return res;
 }
 
 char *dirname(char *path) {
