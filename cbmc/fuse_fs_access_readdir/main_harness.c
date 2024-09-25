@@ -2,13 +2,71 @@
 
 #include <fuse3/fuse.h>
 
-#define PATH_MAX 4096 /* # chars in a path name including nul */
+#include <zephyr/fs/fs.h>
 
-int add_entry(void *buf, const char *name, const struct stat *stbuf, off_t off, enum fuse_fill_dir_flags flags) {
+#define PATH_MAX 256 /* # chars in a path name including nul */
+
+int add_entry(void *buf, const char *name, off_t off, enum fuse_fill_dir_flags flags) {
 
 	int res;
 
 	return res;
+}
+
+int fs_opendir(struct fs_dir_t *zdp, const char *path) {
+
+	int val;
+
+	return val;
+}
+
+int fs_closedir(struct fs_dir_t *zdp) {
+
+	int val;
+
+	return val;
+}
+
+unsigned int getuid() {
+
+	unsigned int val;
+
+	return val;
+}
+
+unsigned int getgid() {
+
+	unsigned int val;
+
+	return val;
+}
+
+int fs_readdir(struct fs_dir_t *zdp, struct fs_dirent *entry) {
+
+	// Create fs_dirent struct:
+
+	struct fs_dirent centry;
+
+	// Copy into the destination:
+
+	*entry = centry;
+
+	// Create unconstrained int:
+
+	int val;
+
+	return val;
+}
+
+int fs_readmount(int *index, const char **name) {
+	
+	// Create unconstrained string:
+
+	uint16_t ssize;
+
+	__CPROVER_assume(0 < ssize && ssize < 10);
+
+	*name = malloc(ssize);
 }
 
 char *dirname(char *path) {
@@ -34,7 +92,7 @@ int harness() {
 
 	uint16_t psize;
 
-	__CPROVER_assume(psize > 1 && psize <= PATH_MAX);
+	__CPROVER_assume(psize > 0 && psize <= PATH_MAX + 10);
 
 	char *path = malloc(psize);
 
@@ -44,7 +102,7 @@ int harness() {
 
 	uint16_t bsize;
 
-	__CPROVER_assume(0 < bsize && bsize <= PATH_MAX);
+	__CPROVER_assume(0 < bsize && bsize <= PATH_MAX + 10);
 
 	uint8_t* buf = malloc(bsize);
 
