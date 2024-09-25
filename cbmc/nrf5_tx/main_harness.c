@@ -5,6 +5,12 @@
 
 #include "ieee802154/ieee802154_nrf5.h"
 
+void nrf5_tx_started(const struct device *dev,
+			    struct net_pkt *pkt,
+			    struct net_buf *frag) {
+					
+				}
+
 int harness() {
 
 	// Model input device
