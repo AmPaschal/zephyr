@@ -160,7 +160,7 @@ static int fuse_fs_access_readmount(void *buf, fuse_fill_dir_t filler)
 	return err;
 }
 
-static int fuse_fs_access_readdir(const char *path, void *buf,
+int fuse_fs_access_readdir(const char *path, void *buf,
 			      fuse_fill_dir_t filler, off_t off,
 			      struct fuse_file_info *fi)
 {
@@ -552,6 +552,6 @@ static void fuse_fs_access_options(void)
 	native_add_command_line_opts(fuse_fs_access_options);
 }
 
-NATIVE_TASK(fuse_fs_access_options, PRE_BOOT_1, 1);
-NATIVE_TASK(fuse_fs_access_init, PRE_BOOT_2, 1);
-NATIVE_TASK(fuse_fs_access_exit, ON_EXIT, 1);
+// NATIVE_TASK(fuse_fs_access_options, PRE_BOOT_1, 1);
+// NATIVE_TASK(fuse_fs_access_init, PRE_BOOT_2, 1);
+// NATIVE_TASK(fuse_fs_access_exit, ON_EXIT, 1);
