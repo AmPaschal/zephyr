@@ -7,31 +7,29 @@
 
 int harness() {
 
-	// Model input arguments
+	// Model input device
 
 	struct device dev;
 
-	// Initialize dev data:
+	// Initialize device data
+	// (Internally this gets cast to a struct nrf5_802154_data so we allocate this)
 
 	dev.data = (struct nrf5_802154_data *)malloc(sizeof(struct nrf5_802154_data));
 
 	struct net_pkt pkt;
 
-	struct net_buf *frag = NET_BUF_SIMPLE(200);
+	// Create and model network buffer
 
-	net_buf_simple_init(frag, 50);
+	struct net_buf frag;
+
+	frag.data = malloc(50);
+	frag.size = 50;
+
+	// Unconstrained enum
 
 	enum ieee802154_tx_mode mode;
 
-	// Model network buffer:
-
-	struct net_buf *buf = NET_BUF_SIMPLE(200);
-
-	net_buf_simple_init(buf, 50);
-
-	pkt.buffer = buf;
-
-	int res = nrf5_tx(&dev, mode, &pkt, frag);
+	int res = nrf5_tx(&dev, mode, &pkt, &frag);
 }
 
 int main() {
