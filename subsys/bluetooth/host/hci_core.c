@@ -2453,7 +2453,7 @@ static void hci_reset_complete(struct net_buf *buf)
 	atomic_set(bt_dev.flags, flags);
 }
 
-static void hci_cmd_done(uint16_t opcode, uint8_t status, struct net_buf *evt_buf)
+void hci_cmd_done(uint16_t opcode, uint8_t status, struct net_buf *evt_buf)
 {
 	/* Original command buffer. */
 	struct net_buf *buf = NULL;
