@@ -4049,6 +4049,8 @@ static void rx_queue_put(struct net_buf *buf)
 {
 	net_buf_slist_put(&bt_dev.rx_queue, buf);
 
+	int err;
+
 #if defined(CONFIG_BT_RECV_WORKQ_SYS)
 	const int err = k_work_submit(&rx_work);
 #elif defined(CONFIG_BT_RECV_WORKQ_BT)

@@ -14,7 +14,7 @@ H_ENTRY = main
 H_CBMCFLAGS = --nondet-static --unwind 1
 
 # Extra header defintiions to be passed during compilation
-H_DEF = 
+H_DEF = -DCONFIG_BT_ID_MAX=4 -DCONFIG_BT_BUF_CMD_TX_COUNT=10 -DCONFIG_BT_BUF_EVT_RX_SIZE=255 -DCONFIG_BT_BUF_CMD_TX_SIZE=255 -DCONFIG_BT_DEVICE_NAME=\"test\" -DCONFIG_BT_DEVICE_APPEARANCE=833
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
