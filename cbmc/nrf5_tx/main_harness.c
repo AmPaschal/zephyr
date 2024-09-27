@@ -11,6 +11,8 @@ void nrf5_tx_started(const struct device *dev,
 					
 				}
 
+int net_pkt_write(struct net_pkt *pkt, const void *data, size_t length) {}
+
 int harness() {
 
 	// Model input device
@@ -20,16 +22,29 @@ int harness() {
 	// Initialize device data
 	// (Internally this gets cast to a struct nrf5_802154_data so we allocate this)
 
-	dev.data = (struct nrf5_802154_data *)malloc(sizeof(struct nrf5_802154_data));
+	struct nrf5_802154_data* ddata = (struct nrf5_802154_data *)malloc(sizeof(struct nrf5_802154_data));
+
+	// Correctly model the ac frame:
+
+	ddata->ack_frame.psdu = malloc(10);
+
+	// Set driver into the data:
+
+	dev.data = ddata;
 
 	struct net_pkt pkt;
 
 	// Create and model network buffer
 
+	uint16_t fsize;
+
+	__CPROVER_assume(fsize <= 200);
+
 	struct net_buf frag;
 
-	frag.data = malloc(50);
-	frag.size = 50;
+	frag.data = malloc(fsize);
+	frag.size = fsize;
+	frag.len = fsize;
 
 	// Unconstrained enum
 
