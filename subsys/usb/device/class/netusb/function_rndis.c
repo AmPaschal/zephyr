@@ -764,7 +764,7 @@ static int rndis_keepalive_handle(uint8_t *data, uint32_t len)
 	return 0;
 }
 
-static int queue_encapsulated_cmd(uint8_t *data, uint32_t len)
+int queue_encapsulated_cmd(uint8_t *data, uint32_t len)
 {
 	struct net_buf *buf;
 
