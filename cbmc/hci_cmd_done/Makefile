@@ -11,7 +11,7 @@ LINK = $(ROOT)/subsys/bluetooth/host/hci_core.c
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1
+H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset harness.0:11
 
 # Extra header defintiions to be passed during compilation
 H_DEF = -DCONFIG_BT_ID_MAX=4 -DCONFIG_BT_BUF_CMD_TX_COUNT=10 -DCONFIG_BT_BUF_EVT_RX_SIZE=255 -DCONFIG_BT_BUF_CMD_TX_SIZE=255 -DCONFIG_BT_DEVICE_NAME=\"test\" -DCONFIG_BT_DEVICE_APPEARANCE=833
