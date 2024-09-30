@@ -41,16 +41,19 @@ static int eswifi_shell_atcmd(const struct shell *sh, size_t argc,
 
 	memset(eswifi->buf, 0, sizeof(eswifi->buf));
 	for (i = 1; i < argc; i++) {
-		size_t argv_len = strlen(argv[i]);
+		// size_t argv_len = strlen(argv[i]);
 
-		if ((len + argv_len) >= sizeof(eswifi->buf) - 1) {
-			break;
-		}
+		// if ((len + argv_len) >= sizeof(eswifi->buf) - 1) {
+		// 	break;
+		// }
 
-		memcpy(eswifi->buf + len, argv[i], argv_len);
-		len += argv_len;
+		// memcpy(eswifi->buf + len, argv[i], argv_len);
+		// len += argv_len;
+
+		strcat(eswifi->buf, argv[i]);
 	}
-	eswifi->buf[len] = '\r';
+	// eswifi->buf[len] = '\r';
+	strcat(eswifi->buf, "\r");
 
 	shell_print(sh, "> %s", eswifi->buf);
 	eswifi_at_cmd(eswifi, eswifi->buf);
