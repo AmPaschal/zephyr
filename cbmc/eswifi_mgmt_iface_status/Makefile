@@ -11,7 +11,7 @@ LINK = $(ROOT)/drivers/wifi/eswifi/eswifi_core.c $(ROOT)/lib/libc/common/source/
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset strnlen.0:50 --unwindset strlen.0:50 --unwindset strncmp.0:50 --unwindset eswifi_at_cmd_rsp.9:10 --unwindset strtol.0:50 --unwindset strncpy.0:50 --unwindset strcpy:50
+H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset strnlen.0:50 --unwindset strlen.0:100 --unwindset strncmp.0:50 --unwindset eswifi_at_cmd_rsp.9:10 --unwindset strtol.0:50 --unwindset strncpy.0:50 --unwindset strcpy.0:100
 
 # Extra header defintiions to be passed during compilation
 H_DEF = -DCONFIG_WIFI_ESWIFI_MAX_DATA_SIZE=500
