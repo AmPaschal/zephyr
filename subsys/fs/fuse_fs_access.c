@@ -183,7 +183,7 @@ int fuse_fs_access_readdir(const char *path, void *buf,
 		 * directory but FUSE strips the trailing slashes from
 		 * directory names so add it back.
 		 */
-		char mount_path[50];  // CHanged path length to be smaller
+		char mount_path[256];
 
 		// sprintf(mount_path, "%s/", path);  // Is not implemented will in Zephyre libc
 
