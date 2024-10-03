@@ -14,12 +14,13 @@ H_ENTRY = main
 H_CBMCFLAGS = --nondet-static --unwind 1
 
 # Extra header defintiions to be passed during compilation
-H_DEF =
+H_DEF = -DCONFIG_BT_MESH_USES_TINYCRYPT=y -DCONFIG_BT_MESH_PB_ADV_RETRANS_TIMEOUT=500 -DCONFIG_BT_MESH_PB_ADV_TRANS_ACK_RETRANSMIT_COUNT=1 -DCONFIG_BT_MESH_PB_ADV_TRANS_PDU_RETRANSMIT_COUNT=1 -DCONFIG_BT_MESH_PB_ADV_LINK_CLOSE_RETRANSMIT_COUNT=1 -DCONFIG_BT_MESH=y
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
 	-isystem $(ROOT)/lib/libc/minimal/include \
 	-I$(ROOT)/subsys/bluetooth/mesh \
+	-I$(ROOT)/subsys/bluetooth \
 	-I$(ROOT)/include \
 	-Ibuild/zephyr/include/generated
 
