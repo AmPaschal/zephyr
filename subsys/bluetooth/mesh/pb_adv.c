@@ -267,7 +267,7 @@ static void tx_work_handler(struct k_work *work)
 	}
 }
 
-static uint8_t last_seg(uint16_t len)
+uint8_t last_seg(uint16_t len)
 {
 	if (len <= START_PAYLOAD_MAX) {
 		return 0;
@@ -478,7 +478,7 @@ static void gen_prov_ack_send(uint8_t xact_id)
 	}
 }
 
-void gen_prov_cont(struct prov_rx *rx, struct net_buf_simple *buf)
+static void gen_prov_cont(struct prov_rx *rx, struct net_buf_simple *buf)
 {
 	uint8_t seg = CONT_SEG_INDEX(rx->gpc);
 
