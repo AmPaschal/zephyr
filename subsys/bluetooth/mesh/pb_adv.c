@@ -78,7 +78,7 @@ struct pb_adv {
 
 	ATOMIC_DEFINE(flags, ADV_NUM_FLAGS);
 
-	const struct prov_bearer_cb *cb;
+	struct prov_bearer_cb *cb;
 	void *cb_data;
 
 	struct {
@@ -140,7 +140,7 @@ struct prov_rx {
 
 NET_BUF_SIMPLE_DEFINE_STATIC(rx_buf, RX_BUFFER_MAX);
 
-static struct pb_adv link = { .rx = { .buf = &rx_buf } };
+struct pb_adv link = { .rx = { .buf = &rx_buf } };
 
 static void gen_prov_ack_send(uint8_t xact_id);
 static void link_open(struct prov_rx *rx, struct net_buf_simple *buf);
@@ -478,7 +478,7 @@ static void gen_prov_ack_send(uint8_t xact_id)
 	}
 }
 
-static void gen_prov_cont(struct prov_rx *rx, struct net_buf_simple *buf)
+void gen_prov_cont(struct prov_rx *rx, struct net_buf_simple *buf)
 {
 	uint8_t seg = CONT_SEG_INDEX(rx->gpc);
 
