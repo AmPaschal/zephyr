@@ -267,7 +267,7 @@ static void tx_work_handler(struct k_work *work)
 	}
 }
 
-uint8_t last_seg(uint16_t len)
+static uint8_t last_seg(uint16_t len)
 {
 	if (len <= START_PAYLOAD_MAX) {
 		return 0;
@@ -571,7 +571,7 @@ static void gen_prov_ack(struct prov_rx *rx, struct net_buf_simple *buf)
 	}
 }
 
-static void gen_prov_start(struct prov_rx *rx, struct net_buf_simple *buf)
+void gen_prov_start(struct prov_rx *rx, struct net_buf_simple *buf)
 {
 	uint8_t seg = SEG_NVAL;
 
@@ -626,12 +626,12 @@ static void gen_prov_start(struct prov_rx *rx, struct net_buf_simple *buf)
 		return;
 	}
 
-	if (START_LAST_SEG(rx->gpc) != last_seg(link.rx.buf->len)) {
-		LOG_ERR("Invalid SegN (%u, calculated %u)", START_LAST_SEG(rx->gpc),
-			last_seg(link.rx.buf->len));
-		prov_failed(PROV_ERR_NVAL_FMT);
-		return;
-	}
+	// if (START_LAST_SEG(rx->gpc) != last_seg(link.rx.buf->len)) {
+	// 	LOG_ERR("Invalid SegN (%u, calculated %u)", START_LAST_SEG(rx->gpc),
+	// 		last_seg(link.rx.buf->len));
+	// 	prov_failed(PROV_ERR_NVAL_FMT);
+	// 	return;
+	// }
 
 	prov_clear_tx();
 
