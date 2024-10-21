@@ -24,11 +24,6 @@ bool usb_handle_request(struct usb_setup_packet *setup,
 					return retval;
 	}
 
-// inline bool usb_reqtype_is_to_device(const struct usb_setup_packet *setup)
-// {
-// 	return true;
-// }
-
 int harness() {
 
 	// Model inputs
