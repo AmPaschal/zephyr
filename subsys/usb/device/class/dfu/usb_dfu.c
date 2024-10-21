@@ -605,7 +605,7 @@ static int dfu_class_handle_to_host(struct usb_setup_packet *setup,
 	return 0;
 }
 
-static int dfu_class_handle_to_device(struct usb_setup_packet *setup,
+int dfu_class_handle_to_device(struct usb_setup_packet *setup,
 				      int32_t *data_len, uint8_t **data)
 {
 	uint16_t timeout;

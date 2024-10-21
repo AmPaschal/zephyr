@@ -210,7 +210,7 @@ static uint8_t usb_get_alt_setting(uint8_t iface)
  *
  * @return true if the request was handles successfully
  */
-static bool usb_handle_request(struct usb_setup_packet *setup,
+bool usb_handle_request(struct usb_setup_packet *setup,
 			       int32_t *len, uint8_t **data)
 {
 	uint32_t type = setup->RequestType.type;
@@ -279,7 +279,7 @@ static void usb_data_to_host(void)
  * @param [in] ep        Endpoint address
  * @param [in] ep_status Endpoint status
  */
-static void usb_handle_control_transfer(uint8_t ep,
+void usb_handle_control_transfer(uint8_t ep,
 					enum usb_dc_ep_cb_status_code ep_status)
 {
 	uint32_t chunk = 0U;
@@ -317,21 +317,22 @@ static void usb_handle_control_transfer(uint8_t ep,
 		usb_dev.data_buf_len = 0;
 		usb_dev.data_buf_residue = 0;
 
-		if (usb_reqtype_is_to_device(setup)) {
-			if (setup->wLength > CONFIG_USB_REQUEST_BUFFER_SIZE) {
-				LOG_ERR("Request buffer too small");
-				usb_dc_ep_set_stall(USB_CONTROL_EP_IN);
-				usb_dc_ep_set_stall(USB_CONTROL_EP_OUT);
-				return;
-			}
+		// if (usb_reqtype_is_to_device(setup)) {
+		// 	if (setup->wLength > CONFIG_USB_REQUEST_BUFFER_SIZE) {
+		// 		LOG_ERR("Request buffer too small");
+		// 		usb_dc_ep_set_stall(USB_CONTROL_EP_IN);
+		// 		usb_dc_ep_set_stall(USB_CONTROL_EP_OUT);
+		// 		return;
+		// 	}
 
-			if (setup->wLength) {
-				/* Continue with data OUT stage */
-				usb_dev.data_buf_len = setup->wLength;
-				usb_dev.data_buf_residue = setup->wLength;
-				return;
-			}
-		}
+		// 	if (setup->wLength) {
+		// 		/* Continue with data OUT stage */
+		// 		usb_dev.data_buf_len = setup->wLength;
+		// 		usb_dev.data_buf_residue = setup->wLength;
+		// 		return;
+		// 	}
+		// }
+		
 
 		/* Ask installed handler to process request */
 		if (!usb_handle_request(setup,
