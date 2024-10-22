@@ -1344,7 +1344,7 @@ static inline void uncompress_cid(struct net_pkt *pkt, uint8_t cid,
 }
 #endif
 
-static bool uncompress_IPHC_header(struct net_pkt *pkt)
+bool uncompress_IPHC_header(struct net_pkt *pkt)
 {
 	struct net_udp_hdr *udp = NULL;
 	struct net_buf *frag = NULL;
