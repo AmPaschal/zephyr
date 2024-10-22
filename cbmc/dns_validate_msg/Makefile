@@ -5,16 +5,16 @@ ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
 # Each file is space seperated, and multiple can be defined
-LINK = $(ROOT)/subsys/bluetooth/host/gatt.c
+LINK = $(ROOT)/subsys/net/lib/dns/resolve.c  $(ROOT)/subsys/net/lib/dns/dns_pack.c
 
 # Harness to utilize, omit the extension!
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwindset gatt_find_info_rsp.12:10
+H_CBMCFLAGS = --nondet-static --verbosity 9 --unwind 1 --unwindset get_slot_by_id.0:2 --unwindset dns_validate_msg.0:2
 
 # Extra header defintiions to be passed during compilation
-H_DEF = -DCONFIG_BT_ID_MAX=62 -DCONFIG_BT_MAX_CONN=62 -DCONFIG_BT_GATT_CLIENT=1 -DCONFIG_BT_MAX_PAIRED=62 -DCONFIG_BT_BUF_ACL_RX_SIZE=255 -DCONFIG_BT_L2CAP_TX_MTU=247
+H_DEF = 
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
@@ -25,6 +25,7 @@ H_INC = \
 	-I$(ROOT)/subsys/bluetooth/controller/ll_sw \
 	-I$(ROOT)/subsys/bluetooth/controller/ll_sw/nordic \
 	-I$(ROOT)/subsys/bluetooth/controller \
+	-I$(ROOT)/subsys \
 	-I$(ROOT)/include \
 	-Ibuild/zephyr/include/generated
 

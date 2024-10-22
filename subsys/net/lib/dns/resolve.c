@@ -704,7 +704,8 @@ int dns_validate_msg(struct dns_resolve_context *ctx,
 	ret = dns_unpack_response_query(dns_msg);
 	if (ret < 0) {
 		/* Check mDNS like above */
-		if (*dns_id > 0) {
+		// if (*dns_id > 0) {
+		if (*dns_id > 0 || dns_msg->msg_size - dns_msg->query_offset == 0) { // Fix - If packet has no extra query or answer, maybe exit? 
 			ret = DNS_EAI_FAIL;
 			goto quit;
 		}
@@ -801,12 +802,13 @@ query_known:
 				goto quit;
 			}
 
-			if ((dns_msg->response_position + address_size) >
-			    dns_msg->msg_size) {
-				/* Too short message */
-				ret = DNS_EAI_FAIL;
-				goto quit;
-			}
+			// Comment out to recreate CVE-2020-13601
+			// if ((dns_msg->response_position + address_size) >
+			//     dns_msg->msg_size) {
+			// 	/* Too short message */
+			// 	ret = DNS_EAI_FAIL;
+			// 	goto quit;
+			// }
 
 			src = dns_msg->msg + dns_msg->response_position;
 			memcpy(addr, src, address_size);
@@ -846,7 +848,7 @@ query_known:
 		 */
 		query_name = dns_msg->msg + dns_msg->query_offset;
 		*query_hash = crc16_ansi(query_name,
-					 strlen(query_name) + 1 + 2);
+					 strlen(query_name) + 1 + 2);	// Vulnerable line here
 
 		*query_idx = get_slot_by_id(ctx, *dns_id, *query_hash);
 		if (*query_idx < 0) {
