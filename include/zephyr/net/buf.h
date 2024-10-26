@@ -1621,7 +1621,7 @@ static inline void net_buf_reserve(struct net_buf *buf, size_t reserve)
  *
  * @return The original tail of the buffer.
  */
-static inline void *net_buf_add(struct net_buf *buf, size_t len)
+static void *net_buf_add(struct net_buf *buf, size_t len)
 {
 	return net_buf_simple_add(&buf->b, len);
 }

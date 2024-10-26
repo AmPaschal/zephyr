@@ -1321,7 +1321,7 @@ static uint8_t *uncompress_nh_udp(uint8_t nhc, uint8_t *cursor,
 
 #if defined(CONFIG_NET_6LO_CONTEXT)
 /* Helper function to uncompress src and dst contexts */
-static inline void uncompress_cid(struct net_pkt *pkt, uint8_t cid,
+inline void uncompress_cid(struct net_pkt *pkt, uint8_t cid,
 				  struct net_6lo_context **src,
 				  struct net_6lo_context **dst)
 {
@@ -1413,27 +1413,27 @@ bool uncompress_IPHC_header(struct net_pkt *pkt)
 	ipv6 = (struct net_ipv6_hdr *)(frag->data);
 	cursor += sizeof(iphc);
 
-	if (iphc & NET_6LO_IPHC_CID_1) {
-#if defined(CONFIG_NET_6LO_CONTEXT)
-		uncompress_cid(pkt, *cursor, &src, &dst);
-		cursor++;
-#else
-		NET_ERR("Context based uncompression not enabled");
-		return false;
-#endif
-	}
+// 	if (iphc & NET_6LO_IPHC_CID_1) {
+// #if defined(CONFIG_NET_6LO_CONTEXT)
+// 		uncompress_cid(pkt, *cursor, &src, &dst);
+// 		cursor++;
+// #else
+// 		NET_ERR("Context based uncompression not enabled");
+// 		return false;
+// #endif
+// 	}
 
 	/* Version is always 6 */
 	ipv6->vtc = 0x60;
 	net_pkt_set_ip_hdr_len(pkt, NET_IPV6H_LEN);
 
 	/* Uncompress Traffic class and Flow label */
-	cursor = uncompress_tfl(iphc, cursor, ipv6);
+	// cursor = uncompress_tfl(iphc, cursor, ipv6);
 
-	if (!(iphc & NET_6LO_IPHC_NH_MASK)) {
-		ipv6->nexthdr = *cursor;
-		cursor++;
-	}
+	// if (!(iphc & NET_6LO_IPHC_NH_MASK)) {
+	// 	ipv6->nexthdr = *cursor;
+	// 	cursor++;
+	// }
 
 	/* Uncompress Hoplimit */
 	cursor = uncompress_hoplimit(iphc, cursor, ipv6);
@@ -1487,18 +1487,19 @@ bool uncompress_IPHC_header(struct net_pkt *pkt)
 			NET_ERR("Context based uncompression not enabled");
 			goto fail;
 #endif
-		} else {
+		} 
+		else {
 			cursor = uncompress_da(iphc, cursor, ipv6, pkt);
 		}
 	}
 
-	if (iphc & NET_6LO_IPHC_NH_MASK) {
-		ipv6->nexthdr = IPPROTO_UDP;
-		udp = (struct net_udp_hdr *)(frag->data + NET_IPV6H_LEN);
-		/* skip nhc */
-		cursor++;
-		cursor = uncompress_nh_udp(nhc, cursor, udp);
-	}
+	// if (iphc & NET_6LO_IPHC_NH_MASK) {
+	// 	ipv6->nexthdr = IPPROTO_UDP;
+	// 	udp = (struct net_udp_hdr *)(frag->data + NET_IPV6H_LEN);
+	// // 	/* skip nhc */
+	// 	cursor++;
+	// 	cursor = uncompress_nh_udp(nhc, cursor, udp);
+	// }
 
 	if (frag != pkt->buffer) {
 		/* Insert the fragment (this one holds uncompressed headers) */

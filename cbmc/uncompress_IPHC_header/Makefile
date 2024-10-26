@@ -5,13 +5,13 @@ ROOT = /home/tlelievr/zephyrproject/zephyr
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
 # Each file is space seperated, and multiple can be defined
-LINK = $(ROOT)/subsys/net/ip/6lo.c
+LINK = $(ROOT)/subsys/net/ip/6lo.c $(ROOT)/subsys/net/buf_simple.c
 
 # Harness to utilize, omit the extension!
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1
+H_CBMCFLAGS = --nondet-static --unwind 1 --verbosity 9 --unwindset get_6lo_context_by_cid.0:5
 
 # Extra header defintiions to be passed during compilation
 H_DEF = 
