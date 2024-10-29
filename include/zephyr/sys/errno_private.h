@@ -20,10 +20,11 @@ extern "C" {
 #ifdef CONFIG_LIBC_ERRNO
 #include <errno.h>
 
-static inline int *z_errno(void)
-{
-	return &errno;
-}
+// Commented this out because errno was throwing an error.
+// static inline int *z_errno(void)
+// {
+// 	return &errno;
+// }
 
 #elif defined(CONFIG_ERRNO_IN_TLS)
 extern __thread int z_errno_var;

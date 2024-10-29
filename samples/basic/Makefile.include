@@ -30,7 +30,7 @@ C_CBMCFLAGS = \
 	--bounds-check \
 	--pointer-check \
 
-IGNORE_OPTIONS = -c|-o|-mfp16-format|-fno-reorder-functions|-fno-printf-return-value|-fno-defer-pop|--specs|--param=min-pagesize
+IGNORE_OPTIONS = -c|-o|-mfp16-format|-fno-reorder-functions|-fno-printf-return-value|-fno-defer-pop|--specs|--param=min-pagesize|-mabi=aapcs|-mthumb|-mtp=soft|-mcpu=cortex-m33
 
 O_INC = \
 	# empty
