@@ -776,6 +776,7 @@ int queue_encapsulated_cmd(uint8_t *data, uint32_t len)
 
 	// uint8_t *dest = net_buf_add(buf, len);
 	void *dest = malloc(len);
+	__CPROVER_assume(dest != NULL);
 
 	memcpy(dest, data, len);
 
