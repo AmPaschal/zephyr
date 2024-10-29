@@ -774,7 +774,10 @@ int queue_encapsulated_cmd(uint8_t *data, uint32_t len)
 		return -ENOMEM;
 	}
 
-	memcpy(net_buf_add(buf, len), data, len);
+	// uint8_t *dest = net_buf_add(buf, len);
+	void *dest = malloc(len);
+
+	memcpy(dest, data, len);
 
 	net_buf_put(&rndis_cmd_queue, buf);
 
