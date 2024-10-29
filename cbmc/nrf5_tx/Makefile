@@ -5,17 +5,17 @@ ROOT = /home/owen/zephyrproject/zephyr
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
 # Each file is space seperated, and multiple can be defined
-LINK = $(ROOT)/drivers/ieee802154/ieee802154_nrf5.c $(ROOT)/subsys/net/ip/net_pkt.c
+LINK = $(ROOT)/drivers/ieee802154/ieee802154_nrf5.c # $(ROOT)/subsys/net/ip/net_pkt.c
 # $(ROOT)/subsys/net/ip/net_pkt.c
 
 # Harness to utilize, omit the extension!
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset nrf5_rx_thread.14:5
+H_CBMCFLAGS = --nondet-static --verbosity 9 --unwind 1 --unwindset nrf5_rx_thread.14:5
 
 # Extra header defintiions to be passed during compilation
-H_DEF = -DCONFIG_BT_CTLR_COMPANY_ID=0x5F1 -DCONFIG_BT_CTLR_SUBVERSION_NUMBER=0xFFFF -DNET_PKT_HAS_CONTROL_BLOCK=1 -DCONFIG_IEEE802154=1
+H_DEF = -DCONFIG_BT_CTLR_COMPANY_ID=0x5F1 -DCONFIG_BT_CTLR_SUBVERSION_NUMBER=0xFFFF -DNET_PKT_HAS_CONTROL_BLOCK=1 -DCONFIG_IEEE802154=1 -DCONFIG_IEEE802154_NRF5_FCS_IN_LENGTH=1
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \

@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "zephyr/net/ieee802154_radio.h"
 #include "zephyr/net/buf.h"
@@ -13,6 +14,20 @@ void nrf5_tx_started(const struct device *dev,
 
 int net_pkt_write(struct net_pkt *pkt, const void *data, size_t length) {}
 
+// Added this stub to resolve errors in the net_pkt.h file
+struct net_pkt *net_pkt_rx_alloc_with_buffer_debug(struct net_if *iface,
+						   size_t size,
+						   sa_family_t family,
+						   enum net_ip_protocol proto,
+						   k_timeout_t timeout,
+						   const char *caller,
+						   int line) {
+
+							struct net_pkt *pkt = malloc(sizeof(struct net_pkt));
+							// __CPROVER_assume(pkt != NULL); // Commented this out to improve coverage of the present null validation
+							return pkt;
+}
+
 int harness() {
 
 	// Model input device
@@ -23,6 +38,9 @@ int harness() {
 	// (Internally this gets cast to a struct nrf5_802154_data so we allocate this)
 
 	struct nrf5_802154_data* ddata = (struct nrf5_802154_data *)malloc(sizeof(struct nrf5_802154_data));
+
+	// Added this to remove a violation
+	__CPROVER_assume(ddata != NULL);
 
 	// Correctly model the ac frame:
 
@@ -43,6 +61,7 @@ int harness() {
 	struct net_buf frag;
 
 	frag.data = malloc(fsize);
+	__CPROVER_assume(frag.data != NULL);
 	frag.size = fsize;
 	frag.len = fsize;
 
