@@ -12,6 +12,9 @@
 
 #define NRF5_PHR_LENGTH   (1)
 
+#define NRF5_FCS_LENGTH   (2)
+#define NRF5_PSDU_LENGTH  (125)
+
 struct nrf5_802154_rx_frame {
 	void *fifo_reserved; /* 1st word reserved for use by fifo. */
 	uint8_t *psdu; /* Pointer to a received frame. */
@@ -63,7 +66,7 @@ struct nrf5_802154_data {
 	/* TX buffer. First byte is PHR (length), remaining bytes are
 	 * MPDU data.
 	 */
-	uint8_t tx_psdu[NRF5_PHR_LENGTH + IEEE802154_MAX_PHY_PACKET_SIZE];
+	uint8_t tx_psdu[NRF5_PHR_LENGTH + NRF5_PSDU_LENGTH + NRF5_FCS_LENGTH];
 
 	/* TX result, updated in radio transmit callbacks. */
 	uint8_t tx_result;

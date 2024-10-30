@@ -12,8 +12,6 @@ void nrf5_tx_started(const struct device *dev,
 					
 				}
 
-int net_pkt_write(struct net_pkt *pkt, const void *data, size_t length) {}
-
 // Added this stub to resolve errors in the net_pkt.h file
 struct net_pkt *net_pkt_rx_alloc_with_buffer_debug(struct net_if *iface,
 						   size_t size,
