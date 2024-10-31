@@ -917,10 +917,11 @@ int send_sf(struct isotp_send_ctx *sctx)
 		frame.data[index++] = ISOTP_PCI_TYPE_SF | len;
 	}
 
-	if (len > sctx->tx_addr.dl - index) {
-		LOG_ERR("SF len does not fit DL");
-		return -ENOSPC;
-	}
+	// Recreating CVE-2023-3725
+	// if (len > sctx->tx_addr.dl - index) {
+	// 	LOG_ERR("SF len does not fit DL");
+	// 	return -ENOSPC;
+	// }
 
 	memcpy(&frame.data[index], data, len);
 
