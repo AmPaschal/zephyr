@@ -892,7 +892,7 @@ static void pull_send_ctx_data(struct isotp_send_ctx *sctx, size_t len)
 	}
 }
 
-static inline int send_sf(struct isotp_send_ctx *sctx)
+int send_sf(struct isotp_send_ctx *sctx)
 {
 	struct can_frame frame;
 	size_t len = get_send_ctx_data_len(sctx);

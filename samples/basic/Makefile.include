@@ -103,7 +103,7 @@ generate_headers:
 	mkdir -p build/cbmc
 	mkdir -p build/gotos
 	mkdir -p build/reports
-	$(CMAKE_COMMAND) . -DBOARD=nrf5340dk/nrf5340/cpuapp -Bbuild -G "Unix Makefiles"
+	$(CMAKE_COMMAND) . -DBOARD=native_posix -Bbuild -G "Unix Makefiles"
 	cd build && $(MAKE) $(MAKESILENT) -f Makefile kernel
 .PHONY: generate_headers
 
@@ -119,7 +119,7 @@ $(ENTRY)_harness.goto: $(ENTRY)_harness.c $(H_GENERATE_HEADER) generate_headers
 
 # Link harness and linked sources
 $(ENTRY)1.goto: $(ENTRY)_harness.goto $(OOS_OBJS)
-	$(GOTO_CC) -o build/$@ --function main build/$(ENTRY)_harness.goto $(addprefix build/gotos/,$(notdir $(OOS_OBJS)))
+	$(GOTO_CC) -o build/$@ --function harness build/$(ENTRY)_harness.goto $(addprefix build/gotos/,$(notdir $(OOS_OBJS)))
 
 # Add CBMC stub library
 $(ENTRY)2.goto: $(ENTRY)1.goto
