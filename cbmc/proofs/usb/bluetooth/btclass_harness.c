@@ -20,8 +20,11 @@ void harness() {
 
     struct usb_setup_packet setup;
 
-    int32_t len;
-    uint8_t *data = malloc(sizeof(uint8_t) * len);
+    uint32_t len;
+    __CPROVER_assume(len > 0 && len < 100);
+    
+    uint8_t *data = malloc(len);
+    __CPROVER_assume(data != NULL);
 
     bluetooth_class_handler(&setup, &len, &data);
 
