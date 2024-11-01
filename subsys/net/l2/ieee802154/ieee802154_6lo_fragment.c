@@ -478,7 +478,7 @@ static inline bool fragment_packet_valid(struct net_pkt *pkt)
  *  in the cache, remaining fragments just cache data fragment, unref
  *  RX pkt. So in both the cases caller can assume packet is consumed.
  */
-static inline enum net_verdict fragment_add_to_cache(struct net_pkt *pkt)
+enum net_verdict fragment_add_to_cache(struct net_pkt *pkt)
 {
 	bool first_frag = false;
 	struct frag_cache *fcache;
