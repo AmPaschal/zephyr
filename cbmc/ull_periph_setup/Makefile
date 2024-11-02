@@ -15,13 +15,17 @@ H_ENTRY = main
 H_CBMCFLAGS = --nondet-static --unwind 1
 
 # Extra header defintiions to be passed during compilation
-H_DEF =
+H_DEF = 
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
 	-isystem $(ROOT)/lib/libc/minimal/include \
 	-I$(ROOT)/subsys/bluetooth/controller/ll_sw \
+	-I$(ROOT)/subsys/bluetooth/controller/include \
 	-I$(ROOT)/subsys/bluetooth \
+	-I$(ROOT)/subsys/bluetooth/controller \
+	-I$(ROOT)/subsys/bluetooth/controller/util \
+	-I$(ROOT)/subsys/bluetooth/controller/hal \
 	-I$(ROOT)/include \
 	-Ibuild/zephyr/include/generated
 

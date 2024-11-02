@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "subsys/bluetooth/controller/ll_sw/lll.h"
-#include "subsys/bluetooth/controller/ll_sw/lll_conn.h"
-#include "subsys/bluetooth/controller/ll_sw/lll_adv.h"
+#include "ll_sw/lll.h"
+#include "ll_sw/lll_conn.h"
+#include "ll_sw/lll_adv.h"
 
 int harness() {
 	struct node_rx_pdu rx;
