@@ -423,7 +423,7 @@ static void fragment_move_back(struct net_pkt *pkt, struct net_buf *frag, struct
 	}
 }
 
-static inline void fragment_remove_headers(struct net_pkt *pkt)
+void fragment_remove_headers(struct net_pkt *pkt)
 {
 	struct net_buf *frag;
 
@@ -435,14 +435,21 @@ static inline void fragment_remove_headers(struct net_pkt *pkt)
 			frag_hdr_len = NET_6LO_FRAG1_HDR_LEN;
 		}
 
-		memmove(frag->data, frag->data + frag_hdr_len, frag->len - frag_hdr_len);
+		uint8_t *trans = malloc(frag->len - frag_hdr_len);
+		__CPROVER_assume(trans != NULL);
+		memcpy(trans, frag->data + frag_hdr_len, frag->len - frag_hdr_len);
+		frag->data = trans;
+		// memcpy(pkt->buffer->data, trans, frag->len - frag_hdr_len);
+		// free(trans);
+
+		// memmove(pkt->buffer->data, pkt->buffer->data + frag_hdr_len, frag->len - frag_hdr_len);
 		frag->len -= frag_hdr_len;
 
 		frag = frag->frags;
 	}
 }
 
-static inline void fragment_reconstruct_packet(struct net_pkt *pkt)
+void fragment_reconstruct_packet(struct net_pkt *pkt)
 {
 	struct net_buf *prev, *current, *next;
 

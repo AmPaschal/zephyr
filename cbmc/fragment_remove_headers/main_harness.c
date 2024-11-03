@@ -6,11 +6,8 @@
 
 // #include header files
 
-enum net_verdict fragment_add_to_cache(struct net_pkt *pkt);
 
-// void fragment_reconstruct_packet(struct net_pkt *pkt) {
-	
-// }
+void fragment_remove_headers(struct net_pkt *pkt);
 
 struct net_buf *net_buf_alloc_stub();
 
@@ -27,7 +24,7 @@ int harness() {
 	pkt->buffer->len = len;
 
 	// Call target function
-	fragment_add_to_cache(pkt);
+	fragment_remove_headers(pkt);
 }
 
 int main() {
