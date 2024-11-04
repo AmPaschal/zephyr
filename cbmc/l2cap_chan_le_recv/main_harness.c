@@ -25,16 +25,17 @@ bool test_and_dec(atomic_t *target) {
 	return random;
 }
 
-int recv(struct bt_l2cap_chan *chan, struct net_buf *buf) {
-	//Returns either 0 or -115
-	bool random;
-	if(random) {
-		return 0;
-	}
-	else {
-		return -115;
-	}
+static int recv(struct bt_l2cap_chan *chan, struct net_buf *buf) {
+	int random;
+	__CPROVER_assume(random <= 0);
+	return random;
 }
+
+static struct net_buf* alloc_buf(struct bt_l2cap_chan *chan) {
+	struct net_buf* buf = malloc(sizeof(struct net_buf));
+	return buf;
+}
+
 
 int harness() {
 	struct bt_l2cap_le_chan chan;
@@ -46,10 +47,20 @@ int harness() {
 	buf.len = buf_len;
 	buf.data = buf_field;
 
-	struct bt_l2cap_chan_ops *ops = malloc(sizeof(struct bt_l2cap_chan_ops));
-	ops -> recv = recv;
+	struct bt_l2cap_chan_ops ops;
+	ops.recv = recv;
+
+	bool includeAllocBuf;
+	if(includeAllocBuf) {
+		//If this function is defined the target function returns early
+		//So we need to have it be NULL sometimes to get 100% coverage
+		ops.alloc_buf = alloc_buf;
+	}
+	else {
+		ops.alloc_buf = NULL;
+	}
 	struct bt_l2cap_chan chan2;
-	chan2.ops = ops;
+	chan2.ops = &ops;
 	chan.chan = chan2;
 
 	l2cap_chan_le_recv(&chan, &buf);
