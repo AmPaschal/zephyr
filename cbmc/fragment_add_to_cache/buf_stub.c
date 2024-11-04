@@ -1,5 +1,6 @@
 
 #include "zephyr/net/buf.h"
+#include "zephyr/net/net_pkt.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -102,4 +103,37 @@ void net_buf_unref(struct net_buf *buf) {
     buf->data = NULL;
     free(buf);
 
+}
+
+struct net_buf *net_buf_frag_last(struct net_buf *buf)
+{
+	__CPROVER_assert(buf != NULL, "buf is Null");
+
+	while (buf->frags) {
+		buf = buf->frags;
+	}
+
+	return buf;
+}
+
+void net_buf_frag_insert(struct net_buf *parent, struct net_buf *frag)
+{
+	__CPROVER_assert(parent != NULL, "parent is Null");
+	__CPROVER_assert(frag != NULL, "frag is Null");
+
+	if (parent->frags) {
+		net_buf_frag_last(frag)->frags = parent->frags;
+	}
+	/* Take ownership of the fragment reference */
+	parent->frags = frag;
+}
+
+void net_pkt_append_buffer(struct net_pkt *pkt, struct net_buf *buffer)
+{
+	if (!pkt->buffer) {
+		pkt->buffer = buffer;
+		net_pkt_cursor_init(pkt);
+	} else {
+		net_buf_frag_insert(net_buf_frag_last(pkt->buffer), buffer);
+	}
 }

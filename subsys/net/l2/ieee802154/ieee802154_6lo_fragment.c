@@ -45,7 +45,7 @@ struct frag_cache {
 	bool used;
 };
 
-static struct frag_cache cache[REASS_CACHE_SIZE];
+struct frag_cache cache[REASS_CACHE_SIZE];
 
 /**
  *  RFC 4944, section 5.3
