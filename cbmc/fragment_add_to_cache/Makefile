@@ -12,7 +12,7 @@ H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
 H_CBMCFLAGS = --nondet-static --verbosity 9 --unwind 1 --unwindset get_reass_cache.0:2 --unwindset set_reass_cache.0:2 --unwindset fragment_cached_pkt_len.0:3 --unwindset clear_reass_cache.0:2 \
-				--unwindset fragment_reconstruct_packet.0:2 --unwindset fragment_remove_headers.0:2 
+				--unwindset fragment_reconstruct_packet.0:4 --unwindset fragment_remove_headers.0:4 --unwindset fragment_move_back.0:4 --unwindset net_buf_frag_last.0:3 --unwindset fragment_cached_pkt_len.0:4
 
 # Extra header defintiions to be passed during compilation
 H_DEF = -DCONFIG_BT_ID_MAX=62 -DCONFIG_BT_MAX_CONN=62 -DCONFIG_BT_GATT_CLIENT=1 -DCONFIG_BT_MAX_PAIRED=62 -DCONFIG_BT_BUF_ACL_RX_SIZE=255 -DCONFIG_BT_L2CAP_TX_MTU=247 \

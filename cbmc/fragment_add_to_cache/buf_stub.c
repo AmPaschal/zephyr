@@ -3,6 +3,7 @@
 #include "zephyr/net/net_pkt.h"
 #include <stdlib.h>
 #include <string.h>
+#include "6lo_private.h"
 
 struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool,
 				    k_timeout_t timeout)
@@ -33,7 +34,7 @@ struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool,
 
 }
 
-struct net_buf *net_buf_alloc_stub()
+struct net_buf *net_buf_alloc_stub(bool filled)
 {
 
     uint8_t net_buf_size;
@@ -51,7 +52,14 @@ struct net_buf *net_buf_alloc_stub()
     buf->__buf = data;
     buf->data = buf->__buf;
     buf->size = size;
-    buf->len = 0;
+
+    if (filled) {
+        uint16_t len;
+        __CPROVER_assume(len > NET_6LO_FRAGN_HDR_LEN && len <= size);
+        buf->len = len;
+    } else {
+        buf->len = 0;
+    }
 
     buf->ref   = 1U;
 	buf->flags = 0U;

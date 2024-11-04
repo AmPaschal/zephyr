@@ -30,7 +30,7 @@ void *net_pkt_get_data(struct net_pkt *pkt, struct net_pkt_data_access *access) 
 	return data;
 }
 
-struct net_buf *net_buf_alloc_stub();
+struct net_buf *net_buf_alloc_stub(bool filled);
 
 int harness() {
 
@@ -38,7 +38,7 @@ int harness() {
 	struct net_pkt *pkt = (struct net_pkt *) malloc(sizeof(struct net_pkt));
 	__CPROVER_assume(pkt != NULL);
 
-	pkt->buffer = net_buf_alloc_stub();
+	pkt->buffer = net_buf_alloc_stub(true);
 
 	uint16_t len;
 	__CPROVER_assume(len > NET_6LO_FRAGN_HDR_LEN && len <= pkt->buffer->size);
@@ -48,7 +48,15 @@ int harness() {
 	struct net_pkt *cache_pkt = (struct net_pkt *) malloc(sizeof(struct net_pkt));
 	__CPROVER_assume(cache_pkt != NULL);
 
-	cache_pkt->buffer = net_buf_alloc_stub();
+	// cache_pkt->buffer = net_buf_alloc_stub();
+	struct net_buf *frag1 = net_buf_alloc_stub(true);
+	struct net_buf *frag2 = net_buf_alloc_stub(true);
+	frag1->frags = frag2;
+	// struct net_buf *frag3 = net_buf_alloc_stub(true);
+	// frag2->frags = frag3;
+
+	cache_pkt->buffer = frag1;
+
 
 	uint16_t cache_buf_len;
 	__CPROVER_assume(cache_buf_len > NET_6LO_FRAGN_HDR_LEN && cache_buf_len <= cache_pkt->buffer->size);

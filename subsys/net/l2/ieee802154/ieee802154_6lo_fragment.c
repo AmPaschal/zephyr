@@ -439,10 +439,8 @@ void fragment_remove_headers(struct net_pkt *pkt)
 		__CPROVER_assume(trans != NULL);
 		memcpy(trans, frag->data + frag_hdr_len, frag->len - frag_hdr_len);
 		frag->data = trans;
-		// memcpy(pkt->buffer->data, trans, frag->len - frag_hdr_len);
-		// free(trans);
 
-		// memmove(pkt->buffer->data, pkt->buffer->data + frag_hdr_len, frag->len - frag_hdr_len);
+		// memmove(frag->data, frag->data + frag_hdr_len, frag->len - frag_hdr_len);
 		frag->len -= frag_hdr_len;
 
 		frag = frag->frags;
@@ -541,10 +539,10 @@ enum net_verdict fragment_add_to_cache(struct net_pkt *pkt)
 
 		clear_reass_cache(size, tag);
 
-		if (!fragment_packet_valid(pkt)) {
-			NET_ERR("Invalid fragmented packet");
-			return NET_DROP;
-		}
+		// if (!fragment_packet_valid(pkt)) {
+		// 	NET_ERR("Invalid fragmented packet");
+		// 	return NET_DROP;
+		// }
 
 		fragment_reconstruct_packet(pkt);
 

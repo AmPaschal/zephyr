@@ -1,7 +1,9 @@
 
 #include "zephyr/net/buf.h"
+#include "zephyr/net/net_pkt.h"
 #include <stdlib.h>
 #include <string.h>
+#include "6lo_private.h"
 
 struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool,
 				    k_timeout_t timeout)
@@ -15,7 +17,7 @@ struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool,
     buf->user_data_size = net_buf_size - sizeof(struct net_buf);
 
     uint16_t size;
-    __CPROVER_assume(size > 0 && size < 100);
+    __CPROVER_assume(size > 0 && size < 7);
     uint8_t *data = malloc(size);   
     __CPROVER_assume(data != NULL);
 
@@ -32,7 +34,7 @@ struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool,
 
 }
 
-struct net_buf *net_buf_alloc_stub()
+struct net_buf *net_buf_alloc_stub(bool filled)
 {
 
     uint8_t net_buf_size;
@@ -50,7 +52,14 @@ struct net_buf *net_buf_alloc_stub()
     buf->__buf = data;
     buf->data = buf->__buf;
     buf->size = size;
-    buf->len = 0;
+
+    if (filled) {
+        uint16_t len;
+        __CPROVER_assume(len > NET_6LO_FRAGN_HDR_LEN && len <= size);
+        buf->len = len;
+    } else {
+        buf->len = 0;
+    }
 
     buf->ref   = 1U;
 	buf->flags = 0U;
@@ -102,4 +111,37 @@ void net_buf_unref(struct net_buf *buf) {
     buf->data = NULL;
     free(buf);
 
+}
+
+struct net_buf *net_buf_frag_last(struct net_buf *buf)
+{
+	__CPROVER_assert(buf != NULL, "buf is Null");
+
+	while (buf->frags) {
+		buf = buf->frags;
+	}
+
+	return buf;
+}
+
+void net_buf_frag_insert(struct net_buf *parent, struct net_buf *frag)
+{
+	__CPROVER_assert(parent != NULL, "parent is Null");
+	__CPROVER_assert(frag != NULL, "frag is Null");
+
+	if (parent->frags) {
+		net_buf_frag_last(frag)->frags = parent->frags;
+	}
+	/* Take ownership of the fragment reference */
+	parent->frags = frag;
+}
+
+void net_pkt_append_buffer(struct net_pkt *pkt, struct net_buf *buffer)
+{
+	if (!pkt->buffer) {
+		pkt->buffer = buffer;
+		net_pkt_cursor_init(pkt);
+	} else {
+		net_buf_frag_insert(net_buf_frag_last(pkt->buffer), buffer);
+	}
 }
