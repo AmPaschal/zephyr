@@ -142,7 +142,7 @@ struct bt_l2cap_chan {
 	/** Channel connection reference */
 	struct bt_conn			*conn;
 	/** Channel operations reference */
-	const struct bt_l2cap_chan_ops	*ops;
+	struct bt_l2cap_chan_ops	*ops;
 	sys_snode_t			node;
 	bt_l2cap_chan_destroy_t		destroy;
 

@@ -304,7 +304,7 @@ static void l2cap_rtx_timeout(struct k_work *work)
 	}
 }
 
-static void l2cap_chan_le_recv(struct bt_l2cap_le_chan *chan,
+void l2cap_chan_le_recv(struct bt_l2cap_le_chan *chan,
 			       struct net_buf *buf);
 
 static void l2cap_rx_process(struct k_work *work)
@@ -734,7 +734,7 @@ static bool chan_has_data(struct bt_l2cap_le_chan *lechan)
 }
 
 #if defined(CONFIG_BT_L2CAP_DYNAMIC_CHANNEL)
-static bool test_and_dec(atomic_t *target)
+bool test_and_dec(atomic_t *target)
 {
 	atomic_t old_value, new_value;
 
@@ -2256,7 +2256,7 @@ static void l2cap_chan_shutdown(struct bt_l2cap_chan *chan)
 	}
 }
 
-static void l2cap_chan_send_credits(struct bt_l2cap_le_chan *chan,
+void l2cap_chan_send_credits(struct bt_l2cap_le_chan *chan,
 				    uint16_t credits)
 {
 	struct bt_l2cap_le_credits *ev;
@@ -2437,7 +2437,7 @@ static void l2cap_chan_le_recv_sdu(struct bt_l2cap_le_chan *chan,
 	net_buf_unref(buf);
 }
 
-static void l2cap_chan_le_recv_seg(struct bt_l2cap_le_chan *chan,
+void l2cap_chan_le_recv_seg(struct bt_l2cap_le_chan *chan,
 				   struct net_buf *buf)
 {
 	uint16_t len;
@@ -2537,7 +2537,7 @@ static void l2cap_chan_le_recv_seg_direct(struct bt_l2cap_le_chan *chan, struct 
 }
 #endif /* CONFIG_BT_L2CAP_SEG_RECV */
 
-static void l2cap_chan_le_recv(struct bt_l2cap_le_chan *chan,
+void l2cap_chan_le_recv(struct bt_l2cap_le_chan *chan,
 			       struct net_buf *buf)
 {
 	uint16_t sdu_len;
@@ -2595,7 +2595,7 @@ static void l2cap_chan_le_recv(struct bt_l2cap_le_chan *chan,
 		}
 		chan->_sdu_len = sdu_len;
 
-		/* Send sdu_len/mps worth of credits */
+	// 	/* Send sdu_len/mps worth of credits */
 		uint16_t credits = DIV_ROUND_UP(
 			MIN(sdu_len - buf->len, net_buf_tailroom(chan->_sdu)),
 			chan->rx.mps);
