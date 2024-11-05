@@ -14,7 +14,7 @@ H_ENTRY = main
 H_CBMCFLAGS = --nondet-static --unwind 1
 
 # Extra header defintiions to be passed during compilation
-H_DEF =
+H_DEF = -DCONFIG_CRYPTO_STM32_MAX_SESSION=1
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
