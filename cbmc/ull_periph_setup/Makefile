@@ -15,7 +15,7 @@ H_ENTRY = main
 H_CBMCFLAGS = --nondet-static --unwind 1
 
 # Extra header defintiions to be passed during compilation
-H_DEF = 
+H_DEF = -DCONFIG_BT_PERIPHERAL=1 -DCONFIG_BT_BROADCASTER=1 -DCONFIG_BT_CONN=1 -DCONFIG_BT_MAX_CONN=1 -DCONFIG_BT_CTLR_LLL_PRIO=1 -DCONFIG_BT_CTLR_ULL_LOW_PRIO=1
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
@@ -27,6 +27,8 @@ H_INC = \
 	-I$(ROOT)/subsys/bluetooth/controller/util \
 	-I$(ROOT)/subsys/bluetooth/controller/hal \
 	-I$(ROOT)/include \
+	-I$(ROOT)/tests/bluetooth/controller/mock_ctrl/include \
+	-I$(ROOT)/subsys/bluetooth/controller/ll_sw/openisa \
 	-Ibuild/zephyr/include/generated
 
 # Include our special build file
