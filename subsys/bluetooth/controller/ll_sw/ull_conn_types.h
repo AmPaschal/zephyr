@@ -185,7 +185,7 @@ struct ll_conn {
 			uint8_t  is_must_expire:1;
 #endif /* CONFIG_BT_CTLR_CONN_META */
 		} common;
-#if defined(CONFIG_BT_PERIPHERAL)
+// #if defined(CONFIG_BT_PERIPHERAL)
 		struct {
 #if defined(CONFIG_BT_CTLR_CONN_META)
 			uint8_t  is_must_expire:1;
@@ -195,7 +195,7 @@ struct ll_conn {
 			uint32_t force;
 			uint32_t ticks_to_offset;
 		} periph;
-#endif /* CONFIG_BT_PERIPHERAL */
+// #endif /* CONFIG_BT_PERIPHERAL */
 
 #if defined(CONFIG_BT_CENTRAL)
 		struct {
