@@ -90,6 +90,7 @@ void ull_periph_setup(struct node_rx_pdu *rx, struct node_rx_ftr *ftr,
 	uint16_t win_offset;
 	memq_link_t *link;
 	uint32_t slot_us;
+	uint16_t interval;
 	uint8_t chan_sel;
 	void *node;
 
@@ -150,23 +151,28 @@ void ull_periph_setup(struct node_rx_pdu *rx, struct node_rx_ftr *ftr,
 	       sizeof(lll->data_chan_map));
 	lll->data_chan_count = util_ones_count_get(&lll->data_chan_map[0],
 			       sizeof(lll->data_chan_map));
+	if (lll->data_chan_count < 2) {
+		return;
+	}
 	lll->data_chan_hop = pdu_adv->connect_ind.hop;
-	lll->interval = sys_le16_to_cpu(pdu_adv->connect_ind.interval);
-	if ((lll->data_chan_count < CHM_USED_COUNT_MIN) ||
+	// lll->interval = sys_le16_to_cpu(pdu_adv->connect_ind.interval);
+	if (
 	    (lll->data_chan_hop < CHM_HOP_COUNT_MIN) ||
-	    (lll->data_chan_hop > CHM_HOP_COUNT_MAX) ||
-	    !lll->interval) {
-		invalid_release(&adv->ull, lll, link, rx);
+	    (lll->data_chan_hop > CHM_HOP_COUNT_MAX)) {
+		// invalid_release(&adv->ull, lll, link, rx);
 
 		return;
 	}
 
 	((struct lll_adv *)ftr->param)->conn = NULL;
+		
+	interval = sys_le16_to_cpu(pdu_adv->connect_ind.interval);
+	lll->interval = interval;
 
 	lll->latency = sys_le16_to_cpu(pdu_adv->connect_ind.latency);
 
 	win_offset = sys_le16_to_cpu(pdu_adv->connect_ind.win_offset);
-	conn_interval_us = lll->interval * CONN_INT_UNIT_US;
+	conn_interval_us = interval * CONN_INT_UNIT_US;
 
 	/* transmitWindowDelay to default calculated connection offset:
 	 * 1.25ms for a legacy PDU, 2.5ms for an LE Uncoded PHY and 3.75ms for
