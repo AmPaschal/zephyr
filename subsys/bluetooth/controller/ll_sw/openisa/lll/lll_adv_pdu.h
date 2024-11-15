@@ -26,7 +26,7 @@ static inline void lll_adv_data_enqueue(struct lll_adv *lll, uint8_t idx)
 	lll_adv_pdu_enqueue(&lll->adv_data, idx);
 }
 
-static inline struct pdu_adv *lll_adv_data_peek(struct lll_adv *lll)
+inline struct pdu_adv *lll_adv_data_peek(struct lll_adv *lll)
 {
 	return (void *)lll->adv_data.pdu[lll->adv_data.last];
 }

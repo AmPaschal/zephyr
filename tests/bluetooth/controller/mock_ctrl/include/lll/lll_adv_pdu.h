@@ -25,7 +25,7 @@ static inline void lll_adv_data_enqueue(struct lll_adv *lll, uint8_t idx)
 	lll_adv_pdu_enqueue(&lll->adv_data, idx);
 }
 
-static inline struct pdu_adv *lll_adv_data_peek(struct lll_adv *lll)
+inline struct pdu_adv *lll_adv_data_peek(struct lll_adv *lll)
 {
 	return (void *)lll->adv_data.pdu[lll->adv_data.last];
 }
@@ -35,7 +35,7 @@ static inline struct pdu_adv *lll_adv_data_curr_get(struct lll_adv *lll)
 	return (void *)lll->adv_data.pdu[lll->adv_data.first];
 }
 
-static inline struct pdu_adv *lll_adv_scan_rsp_alloc(struct lll_adv *lll, uint8_t *idx)
+inline struct pdu_adv *lll_adv_scan_rsp_alloc(struct lll_adv *lll, uint8_t *idx)
 {
 	return lll_adv_pdu_alloc(&lll->scan_rsp, idx);
 }
@@ -45,7 +45,7 @@ static inline void lll_adv_scan_rsp_enqueue(struct lll_adv *lll, uint8_t idx)
 	lll_adv_pdu_enqueue(&lll->scan_rsp, idx);
 }
 
-static inline struct pdu_adv *lll_adv_scan_rsp_peek(struct lll_adv *lll)
+inline struct pdu_adv *lll_adv_scan_rsp_peek(struct lll_adv *lll)
 {
 	return (void *)lll->scan_rsp.pdu[lll->scan_rsp.last];
 }
