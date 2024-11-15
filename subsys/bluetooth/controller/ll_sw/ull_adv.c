@@ -1890,9 +1890,9 @@ uint8_t ull_scan_rsp_set(struct ll_adv_set *adv, uint8_t len,
 	struct pdu_adv *pdu;
 	uint8_t idx;
 
-	if (len > PDU_AC_LEG_DATA_SIZE_MAX) {
-		return BT_HCI_ERR_INVALID_PARAM;
-	}
+	// if (len > PDU_AC_LEG_DATA_SIZE_MAX) {
+	// 	return BT_HCI_ERR_INVALID_PARAM;
+	// }
 
 	/* update scan pdu fields. */
 	prev = lll_adv_scan_rsp_peek(&adv->lll);
