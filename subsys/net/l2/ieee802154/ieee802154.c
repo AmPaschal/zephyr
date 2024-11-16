@@ -357,7 +357,7 @@ out:
 	return ret;
 }
 
-static enum net_verdict ieee802154_recv(struct net_if *iface, struct net_pkt *pkt)
+enum net_verdict ieee802154_recv(struct net_if *iface, struct net_pkt *pkt)
 {
 	const struct ieee802154_radio_api *radio = net_if_get_device(iface)->api;
 	enum net_verdict verdict = NET_CONTINUE;
