@@ -32,13 +32,15 @@ int harness() {
 	struct net_pkt pkt;
 	struct net_buf* buf = malloc(sizeof(struct net_buf));
 	__CPROVER_assume(buf != NULL);
-	struct ieee802154_fcf_seq* fs = malloc(sizeof(struct ieee802154_fcf_seq));
+	const fs_len;
+	__CPROVER_assume(fs_len == 3);
+	uint8_t* fs = malloc(fs_len);
 	__CPROVER_assume(fs != NULL);
-	enum ieee802154_frame_type frame_type;
 	
 	buf -> data = fs;
 	buf -> frags = NULL;
-	pkt.buffer = buf;
+	buf -> len = fs_len;
+	pkt.frags = buf;
 
 	ieee802154_recv(&iface, &pkt);
 }
