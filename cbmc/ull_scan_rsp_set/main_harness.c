@@ -94,7 +94,7 @@ int harness() {
 
 	//Data buffer
 	uint8_t* data = malloc(len);
-
+	__CPROVER_assume(data != NULL);
 
 
 	uint8_t pdu_size;
