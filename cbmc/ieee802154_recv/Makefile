@@ -5,7 +5,7 @@ ROOT = /home/tlelievr/zephyrproject/zephyr
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
 # Each file is space seperated, and multiple can be defined
-LINK = $(ROOT)/subsys/net/l2/ieee802154/ieee802154.c
+LINK = $(ROOT)/subsys/net/l2/ieee802154/ieee802154.c $(ROOT)/subsys/net/l2/ieee802154/ieee802154_frame.c
 
 # Harness to utilize, omit the extension!
 H_ENTRY = main
@@ -20,7 +20,8 @@ H_DEF =
 H_INC = \
 	-isystem $(ROOT)/lib/libc/minimal/include \
 	-I$(ROOT)/subsys/net \
-	-I$(ROOT)/subsys/net/l2
+	-I$(ROOT)/subsys/net/l2 \
+	-I$(ROOT)/subsys/net/l2/ieee802154 \
 	-I$(ROOT)/include \
 	-Ibuild/zephyr/include/generated
 

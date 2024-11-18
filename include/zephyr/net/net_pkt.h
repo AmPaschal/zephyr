@@ -1225,7 +1225,7 @@ static inline void net_pkt_set_stats_tick(struct net_pkt *pkt, uint32_t tick)
 #endif /* CONFIG_NET_PKT_TXTIME_STATS_DETAIL ||
 	  CONFIG_NET_PKT_RXTIME_STATS_DETAIL */
 
-static inline size_t net_pkt_get_len(struct net_pkt *pkt)
+inline size_t net_pkt_get_len(struct net_pkt *pkt)
 {
 	return net_buf_frags_len(pkt->frags);
 }
