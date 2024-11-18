@@ -32,14 +32,14 @@ int harness() {
 	struct net_pkt pkt;
 	struct net_buf* buf = malloc(sizeof(struct net_buf));
 	__CPROVER_assume(buf != NULL);
-	const fs_len;
-	__CPROVER_assume(fs_len == 3);
-	uint8_t* fs = malloc(fs_len);
+	uint8_t fs_size;
+	__CPROVER_assume(fs_size > sizeof(struct ieee802154_fcf_seq));
+	uint8_t* fs = malloc(fs_size);
 	__CPROVER_assume(fs != NULL);
 	
 	buf -> data = fs;
+	buf -> len = fs_size;
 	buf -> frags = NULL;
-	buf -> len = fs_len;
 	pkt.frags = buf;
 
 	ieee802154_recv(&iface, &pkt);
