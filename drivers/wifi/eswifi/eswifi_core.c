@@ -60,7 +60,7 @@ static int eswifi_reset(struct eswifi_dev *eswifi, const struct eswifi_cfg *cfg)
 			      sizeof(eswifi->buf));
 }
 
-static inline int __parse_ssid(char *str, char *ssid)
+inline int __parse_ssid(char *str, char *ssid)
 {
 	int i = 0;
 
