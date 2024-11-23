@@ -62,24 +62,30 @@ static int eswifi_reset(struct eswifi_dev *eswifi, const struct eswifi_cfg *cfg)
 
 inline int __parse_ssid(char *str, char *ssid)
 {
-	int i = 0;
+	/* fnt => '"SSID"' */
+	// int i = 0;
 
-	/* fmt => "SSID" */
-
-	if (*str != '"') {
-		return 0;
+	if (!*str || (*str != '"')) {
+		return -EINVAL;
 	}
+
+
 	str++;
-
-	while (*str && (*str != '"') && i < WIFI_SSID_MAX_LEN) {
-		ssid[i++] = *str++;
+	while (*str && (*str != '"')) {
+		*ssid++ = *str++;
 	}
+	// str++;
+
+	*ssid = '\0';
+	// while (*str && (*str != '"') && i < WIFI_SSID_MAX_LEN) {
+	// 	ssid[i++] = *str++;
+	// }
 
 	if (*str != '"') {
-		return 0;
+		return -EINVAL;
 	}
 
-	return i;
+	return -EINVAL;
 }
 
 static void __parse_scan_res(char *str, struct wifi_scan_result *res)
