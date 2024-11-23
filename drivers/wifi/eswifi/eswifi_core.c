@@ -41,8 +41,8 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 K_KERNEL_STACK_DEFINE(eswifi_work_q_stack, ESWIFI_WORKQUEUE_STACK_SIZE);
 
 static const struct eswifi_cfg eswifi0_cfg = {
-	.resetn = GPIO_DT_SPEC_INST_GET(0, resetn_gpios),
-	.wakeup = GPIO_DT_SPEC_INST_GET(0, wakeup_gpios),
+	// .resetn = GPIO_DT_SPEC_INST_GET(0, resetn_gpios),
+	// .wakeup = GPIO_DT_SPEC_INST_GET(0, wakeup_gpios),
 };
 
 static struct eswifi_dev eswifi0; /* static instance */
@@ -809,10 +809,10 @@ static const struct net_wifi_mgmt_offload eswifi_offload_api = {
 	.wifi_mgmt_api = &eswifi_mgmt_api,
 };
 
-NET_DEVICE_DT_INST_OFFLOAD_DEFINE(0, eswifi_init, NULL,
-				  &eswifi0, &eswifi0_cfg,
-				  CONFIG_WIFI_INIT_PRIORITY,
-				  &eswifi_offload_api,
-				  1500);
+// NET_DEVICE_DT_INST_OFFLOAD_DEFINE(0, eswifi_init, NULL,
+// 				  &eswifi0, &eswifi0_cfg,
+// 				  CONFIG_WIFI_INIT_PRIORITY,
+// 				  &eswifi_offload_api,
+// 				  1500);
 
 CONNECTIVITY_WIFI_MGMT_BIND(Z_DEVICE_DT_DEV_ID(DT_DRV_INST(0)));

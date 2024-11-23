@@ -14,13 +14,17 @@ H_ENTRY = main
 H_CBMCFLAGS = --nondet-static --unwind 1
 
 # Extra header defintiions to be passed during compilation
-H_DEF = 
+H_DEF = -DCONFIG_WIFI_ESWIFI_MAX_DATA_SIZE=64
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
 	-isystem $(ROOT)/lib/libc/minimal/include \
 	-I$(ROOT)/driver/wifi/eswifi \
 	-I$(ROOT)/driver/wifi \
+	-I$(ROOT)/include/zephyr/arch \
+	-I$(ROOT)/include/zephyr/kernel \
+	-I$(ROOT)/include/zephyr/drivers \
+	-I$(ROOT)/include/zephyr \
 	-I$(ROOT)/include \
 	-Ibuild/zephyr/include/generated
 
