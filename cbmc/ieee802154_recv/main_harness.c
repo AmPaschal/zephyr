@@ -4,7 +4,28 @@
 #include "zephyr/net/net_pkt.h"
 #include "zephyr/net/ieee802154_radio.h"
 #include "l2/ieee802154/ieee802154_frame.h"
+#include "l2/ieee802154/ieee802154_6lo.h"
 
+bool ieee802154_validate_frame(uint8_t *buf, uint8_t length, struct ieee802154_mpdu *mpdu) {
+	struct ieee802154_mpdu new_mpdu;
+	struct ieee802154_fcf_seq* fs = malloc(sizeof(struct ieee802154_fcf_seq));
+	__CPROVER_assume(fs != NULL);
+	struct ieee802154_address_field* dst_addr = malloc(sizeof(struct ieee802154_address_field));
+	__CPROVER_assume(dst_addr != NULL);
+	struct ieee802154_address_field* src_addr = malloc(sizeof(struct ieee802154_address_field));
+	__CPROVER_assume(src_addr != NULL);
+	uint8_t* payload = (uint8_t*) malloc(length); //I'm not at all confident this is what I'm supposed to be doing but I need this to be defined
+	__CPROVER_assume(payload != NULL);
+	new_mpdu.payload = payload;
+	new_mpdu.payload_length = length;
+	new_mpdu.mhr.fs = fs;
+	new_mpdu.mhr.dst_addr = dst_addr;
+	new_mpdu.mhr.src_addr = src_addr;
+	*mpdu = new_mpdu;
+	__CPROVER_assume(&(mpdu -> mhr) != NULL);
+	bool rand;
+	return rand;
+}
 
 size_t net_pkt_get_len(struct net_pkt *pkt) {
 	size_t rand;
@@ -30,16 +51,24 @@ int harness() {
 	iface.if_dev = if_dev;
 
 	struct net_pkt pkt;
+	__CPROVER_assume(&pkt != NULL);
 	struct net_buf* buf = malloc(sizeof(struct net_buf));
 	__CPROVER_assume(buf != NULL);
-	uint8_t fs_size;
-	__CPROVER_assume(fs_size > sizeof(struct ieee802154_fcf_seq));
-	uint8_t* fs = malloc(fs_size);
-	__CPROVER_assume(fs != NULL);
+	uint8_t size;
+	__CPROVER_assume(size <= 100);
+	uint8_t* data = (uint8_t*) malloc(size);
+	__CPROVER_assume(data != NULL);
+	buf -> data = data;
+	buf -> len = size;
+	// uint8_t fs_size;
+	// __CPROVER_assume(fs_size > sizeof(struct ieee802154_fcf_seq));
+	// struct ieee802154_fcf_seq* fs = (struct ieee802154_fcf_seq*) malloc(fs_size);
+	// __CPROVER_assume(fs != NULL);
+	// __CPROVER_assume(&(fs -> fc) != NULL);
 	
-	buf -> data = fs;
-	buf -> len = fs_size;
-	buf -> frags = NULL;
+	// buf -> data = fs;
+	// buf -> len = fs_size;
+	// buf -> frags = NULL;
 	pkt.frags = buf;
 
 	ieee802154_recv(&iface, &pkt);
