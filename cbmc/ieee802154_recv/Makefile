@@ -1,6 +1,6 @@
 # Defines the root of the project.
 # Be aware of how many directories deep you go!
-ROOT = /home/tlelievr/zephyrproject/zephyr
+ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
 
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
@@ -11,10 +11,10 @@ LINK = $(ROOT)/subsys/net/l2/ieee802154/ieee802154.c $(ROOT)/subsys/net/l2/ieee8
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1
+H_CBMCFLAGS = --nondet-static --unwind 1 --verbosity 9 --unwindset sys_memcpy_swap.0:9 --unwindset net_buf_frags_len.0:2
 
 # Extra header defintiions to be passed during compilation
-H_DEF = -DCONFIG_LITTLE_ENDIAN=n
+H_DEF = -DCONFIG_LITTLE_ENDIAN=n  
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
