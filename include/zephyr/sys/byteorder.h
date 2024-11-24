@@ -681,7 +681,7 @@ static inline uint64_t sys_get_le64(const uint8_t src[8])
  * @param src A valid pointer on a memory area where to copy the data from
  * @param length Size of both dst and src memory areas
  */
-static inline void sys_memcpy_swap(void *dst, const void *src, size_t length)
+inline void sys_memcpy_swap(void *dst, const void *src, size_t length)
 {
 	uint8_t *pdst = (uint8_t *)dst;
 	const uint8_t *psrc = (const uint8_t *)src;

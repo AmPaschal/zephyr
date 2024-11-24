@@ -11,7 +11,7 @@ LINK = $(ROOT)/subsys/net/l2/ieee802154/ieee802154.c $(ROOT)/subsys/net/l2/ieee8
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1 --verbosity 9 --unwindset sys_memcpy_swap.0:9 --unwindset net_buf_frags_len.0:2
+H_CBMCFLAGS = --nondet-static --unwind 1 --verbosity 9  --unwindset net_buf_frags_len.0:2 --unwindset sys_memcpy_swap.0:9
 
 # Extra header defintiions to be passed during compilation
 H_DEF = -DCONFIG_LITTLE_ENDIAN=n  
