@@ -16,15 +16,14 @@ bool ieee802154_validate_frame(uint8_t *buf, uint8_t length, struct ieee802154_m
 	__CPROVER_assume(src_addr != NULL);
 	uint8_t* payload = (uint8_t*) malloc(length); //I'm not at all confident this is what I'm supposed to be doing but I need this to be defined
 	__CPROVER_assume(payload != NULL);
-	new_mpdu.payload = payload;
-	new_mpdu.payload_length = length;
+	// new_mpdu.payload = payload;
+	// new_mpdu.payload_length = length;
 	new_mpdu.mhr.fs = fs;
 	new_mpdu.mhr.dst_addr = dst_addr;
 	new_mpdu.mhr.src_addr = src_addr;
 	*mpdu = new_mpdu;
 	__CPROVER_assume(&(mpdu -> mhr) != NULL);
-	bool rand;
-	return rand;
+	return validate_payload_and_mfr(mpdu, buf, payload, length);
 }
 
 size_t net_pkt_get_len(struct net_pkt *pkt) {
@@ -51,7 +50,13 @@ int harness() {
 	iface.if_dev = if_dev;
 
 	struct net_pkt pkt;
+	struct net_linkaddr src;
+	struct net_linkaddr dst;
+	pkt.lladdr_src = src;
+	pkt.lladdr_dst = dst;
 	__CPROVER_assume(&pkt != NULL);
+	__CPROVER_assume(&(pkt.lladdr_src) != NULL);
+	__CPROVER_assume(&(pkt.lladdr_dst) != NULL);
 	struct net_buf* buf = malloc(sizeof(struct net_buf));
 	__CPROVER_assume(buf != NULL);
 	uint8_t size;

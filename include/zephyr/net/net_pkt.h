@@ -148,7 +148,7 @@ struct net_pkt {
 	atomic_t atomic_ref;
 
 	/* Filled by layer 2 when network packet is received. */
-	struct net_linkaddr lladdr_src;
+	struct net_linkaddr 	lladdr_src;
 	struct net_linkaddr lladdr_dst;
 	uint16_t ll_proto_type;
 

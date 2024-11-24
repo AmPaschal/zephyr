@@ -368,7 +368,7 @@ static inline bool validate_mac_command(struct ieee802154_mpdu *mpdu, uint8_t *b
 	return true;
 }
 
-static inline bool validate_payload_and_mfr(struct ieee802154_mpdu *mpdu, uint8_t *buf,
+inline bool validate_payload_and_mfr(struct ieee802154_mpdu *mpdu, uint8_t *buf,
 					    uint8_t *p_buf, uint8_t length)
 {
 	uint8_t type = mpdu->mhr.fs->fc.frame_type;

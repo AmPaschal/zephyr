@@ -506,6 +506,9 @@ static inline struct ieee802154_command *ieee802154_get_mac_command(struct net_p
 	return (struct ieee802154_command *)(pkt->frags->data + pkt->frags->len);
 }
 
+inline bool validate_payload_and_mfr(struct ieee802154_mpdu *mpdu, uint8_t *buf,
+					    uint8_t *p_buf, uint8_t length);
+
 bool ieee802154_create_ack_frame(struct net_if *iface, struct net_pkt *pkt, uint8_t seq);
 
 #ifdef CONFIG_NET_L2_IEEE802154_SECURITY
