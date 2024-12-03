@@ -1,6 +1,6 @@
 # Defines the root of the project.
 # Be aware of how many directories deep you go!
-ROOT = /home/tlelievr/zephyrproject/zephyr
+ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
 
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
@@ -34,6 +34,7 @@ H_INC = \
 	-I$(ROOT)/include \
 	-I$(ROOT)/tests/bluetooth/controller/mock_ctrl/include \
 	-I$(ROOT)/subsys/bluetooth/controller/ll_sw/openisa \
+	# -I$(ROOT)/include/zephyr/sys \
 	-Ibuild/zephyr/include/generated
 
 # Include our special build file
