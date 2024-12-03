@@ -53,11 +53,7 @@
 
 #include "ll_sw/ull_llcp.h"
 
-// #include "ll_sw/pdu.h"
-// #include "util/memq.h"
-// #include "ll_sw/lll.h"
-// #include "ll_sw/lll_conn.h"
-// #include "ll_sw/lll_adv.h"
+
 
 int harness() {
 	// When you compile, your coverage will be very low. Replacing your current definition of 
@@ -78,6 +74,9 @@ int harness() {
 
 	// struct node_rx_pdu rx;
 	struct node_rx_ftr ftr;
+	struct node_rx_pdu *extra_rx = malloc(size);
+	__CPROVER_assume(extra_rx != NULL);
+	ftr.extra = extra_rx;
 	struct lll_conn lll;
 
 
