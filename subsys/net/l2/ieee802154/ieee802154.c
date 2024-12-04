@@ -381,9 +381,9 @@ enum net_verdict ieee802154_recv(struct net_if *iface, struct net_pkt *pkt)
 
 	fs = mpdu.mhr.fs;
 
-	if (fs->fc.frame_type == IEEE802154_FRAME_TYPE_ACK) {
-		return NET_DROP;
-	}
+	// if (fs->fc.frame_type == IEEE802154_FRAME_TYPE_ACK) {
+	// 	return NET_DROP;
+	// }
 
 	if (fs->fc.frame_type == IEEE802154_FRAME_TYPE_BEACON) {
 		verdict = ieee802154_handle_beacon(iface, &mpdu, net_pkt_ieee802154_lqi(pkt));
