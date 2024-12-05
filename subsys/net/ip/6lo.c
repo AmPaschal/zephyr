@@ -107,8 +107,13 @@ static int get_ihpc_inlined_size(uint16_t iphc)
 	size += sa_inline_size_table[(iphc & NET_6LO_IPHC_SA_MASK) >>
 				      NET_6LO_IPHC_SAM_POS];
 
-	size += da_inline_size_table[(iphc & NET_6LO_IPHC_DA_MASK) >>
-				      NET_6LO_IPHC_DAM_POS];
+	uint8_t daIndex = (iphc & NET_6LO_IPHC_DA_MASK) >>
+				      NET_6LO_IPHC_DAM_POS;
+	if (daIndex >= sizeof(da_inline_size_table)) {
+		NET_DBG("Invalid DA index");
+		return -1;
+	}
+	size += da_inline_size_table[daIndex];
 
 	NET_DBG("Size of inlined IP HDR data: %d", size);
 
@@ -1602,7 +1607,8 @@ int net_6lo_uncompress_hdr_diff(struct net_pkt *pkt)
 	uint8_t nhc;
 
 	if (pkt->frags->data[0] == NET_6LO_DISPATCH_IPV6) {
-		return -1;
+		// If it is an uncompressed IPv6 packet, just return 0 as the diff
+		return 0;
 	}
 
 	if ((pkt->frags->data[0] & NET_6LO_DISPATCH_IPHC_MASK) !=
@@ -1613,7 +1619,10 @@ int net_6lo_uncompress_hdr_diff(struct net_pkt *pkt)
 	iphc = ntohs(UNALIGNED_GET((uint16_t *)pkt->buffer->data));
 
 	inline_size = get_ihpc_inlined_size(iphc);
-	if (inline_size < 0) {
+	// Added a check that we don't have a header greater than the size of IPv6 header
+	// Added another check that the inline size is not greater than the packet buffer length
+	// We needed to add 1 to confirm there is extra data to read nhc
+	if (inline_size < 0 || inline_size > 38 || (inline_size + sizeof(iphc) + 1) > pkt->buffer->len - 4) { 
 		return INT_MAX;
 	}
 
