@@ -1230,8 +1230,8 @@ void rp_cu_st_wait_rx_conn_update_ind(struct ll_conn *conn, struct proc_ctx *ctx
 			llcp_pdu_decode_conn_update_ind(ctx, param);
 
 			/* Valid PDU */
-			// if (1) {  // Disable check (ensure it is true)
-			if (cu_check_conn_ind_parameters(conn, ctx)) {
+			if (1) {  // Disable check (ensure it is true)
+			// if (cu_check_conn_ind_parameters(conn, ctx)) {
 				if (is_instant_not_passed(ctx->data.cu.instant,
 							  ull_conn_event_counter(conn))) {
 					/* Keep RX node to use for NTF */
