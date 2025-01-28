@@ -40,7 +40,9 @@ int harness() {
 
 	// __CPROVER_assume(pdu.format == 1);
 	
-	uint8_t *pointer = (struct bt_att_find_info_rsp *) malloc(length - 1);
+	uint8_t *pointer = (struct bt_att_find_info_rsp *) malloc(length);
+
+	__CPROVER_assume(pointer != NULL);
 
 	pdu.info = pointer;
 
