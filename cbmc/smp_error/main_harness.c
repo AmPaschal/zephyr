@@ -19,31 +19,48 @@
 #include "conn_internal.h"
 #include "l2cap_internal.h"
 #include "smp.h"
+#include "slist.h"
 
 void smp_pairing_complete(struct bt_smp *smp, uint8_t status) {}
 
-void *net_buf_simple_add(struct net_buf_simple *buf, size_t len) {
+// void *net_buf_simple_add(struct net_buf_simple *buf, size_t len) {
 
-	// Return unconstrained bt_smp_hdr struct:
+// 	// Return unconstrained bt_smp_hdr struct:
 
-	struct bt_smp_hdr* res = (struct bt_smp_hdr*)malloc(sizeof(struct bt_smp_hdr));
+// 	struct bt_smp_hdr* res = (struct bt_smp_hdr*)malloc(sizeof(struct bt_smp_hdr));
 
-	return res;
-}
+// 	return res;
+// }
 
 struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool, k_timeout_t timeout) {
 
 	// Allocate buffer:
 
-	struct net_buf *buf = (struct net_buf *)malloc(sizeof(struct net_buf));
+	uint8_t buflen;
+	__CPROVER_assume(buflen > sizeof(struct net_buf));
+
+	struct net_buf *buf = (struct net_buf *)malloc(buflen);
+	__CPROVER_assume(buf != NULL);
+
+	uint8_t size;
+	__CPROVER_assume(size > 0);
+	buf->data = malloc(size);
+	__CPROVER_assume(buf->data != NULL);
+	buf->__buf = buf->data;
+	buf->size = size;
+	uint8_t len;
+	__CPROVER_assume(len + sizeof(struct bt_smp_pairing_fail) < size);
+	buf->len = len;
+
+	buf->user_data_size = buflen - sizeof(struct net_buf);
 
 	return buf;
 }
 
-void net_buf_simple_reserve(struct net_buf_simple *buf, size_t reserve) {
+// void net_buf_simple_reserve(struct net_buf_simple *buf, size_t reserve) {
 
-	buf->data = buf->__buf + reserve;
-}
+// 	buf->data = buf->__buf + reserve;
+// }
 
 struct net_buf *bt_l2cap_create_pdu_timeout(struct net_buf_pool *pool, size_t reserve, k_timeout_t timeout) {
 
@@ -161,6 +178,20 @@ int harness() {
 	// Model input struct:
 
 	struct bt_smp bts;
+
+	struct bt_conn *conn = malloc(sizeof(struct bt_conn));
+	__CPROVER_assume(conn != NULL);
+
+	// sys_slist_t *list = malloc(sizeof(sys_slist_t));
+	// __CPROVER_assume(list != NULL);
+	// conn->l2cap_data_ready = list;
+	if (conn != NULL) {
+		conn->l2cap_data_ready.tail = malloc(sizeof(sys_snode_t));
+		conn->l2cap_data_ready.head = malloc(sizeof(sys_snode_t));
+	}
+	bts.chan.chan.conn = conn;
+
+	// struct bt_l2cap_le_chan *le_chan
 
 	// Model input reason:
 
