@@ -4525,10 +4525,10 @@ void gatt_find_info_rsp(struct bt_conn *conn, int err,
 		goto done;
 	}
 
-	if (length < sizeof(*rsp)) {
-		LOG_WRN("Parse err");
-		goto done;
-	}
+	// if (length < sizeof(*rsp)) {
+	// 	LOG_WRN("Parse err");
+	// 	goto done;
+	// }
 
 	rsp = pdu;
 
