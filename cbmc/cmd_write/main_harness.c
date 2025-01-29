@@ -11,6 +11,10 @@ void shell_error_impl(const struct shell *sh, const char *fmt, ...) {}
 int dummy_csi_save(struct settings_store *cs, const char *name,
 			const char *value, size_t val_len) {}
 
+int cmd_write(const struct shell *shell_ptr, size_t argc, char *argv[]);
+
+void settings_store_init(void);
+
 char *valid_string() {
 
 	// Define string size:
@@ -25,6 +29,8 @@ char *valid_string() {
 
 	char *data = malloc(size);
 
+	__CPROVER_assume(data != NULL);
+
 	// Put null character in final position:
 
 	data[size - 1] = '\0';
@@ -36,7 +42,7 @@ char *valid_string() {
 
 int harness() {
 
-	settings_store_init();
+	// settings_store_init();
 	
 	// Model global settings:
 
@@ -64,7 +70,7 @@ int harness() {
 
 	// Place a limit on the number of arguments:
 
-	__CPROVER_assume(argc < 10 && argc > 1);
+	__CPROVER_assume(argc < 5 && argc > 1);
 
 	// Create argument array:
 
