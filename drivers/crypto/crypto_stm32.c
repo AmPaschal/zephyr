@@ -54,10 +54,11 @@ int copy_reverse_words(uint8_t *dst_buf, int dst_len,
 
 	__ASSERT_NO_MSG(dst_len >= src_len);
 	__ASSERT_NO_MSG((dst_len % 4) == 0);
-	// if ((dst_len < src_len) || ((dst_len % 4) != 0)) {
-	// 	LOG_ERR("Buffer length error");
-	// 	return -EINVAL;
-	// }
+	// if (0) {
+	if ((dst_len < src_len) || ((dst_len % 4) != 0)) {
+		LOG_ERR("Buffer length error");
+		return -EINVAL;
+	}
 
 	memcpy(dst_buf, src_buf, src_len);
 	for (i = 0; i < dst_len; i += sizeof(uint32_t)) {

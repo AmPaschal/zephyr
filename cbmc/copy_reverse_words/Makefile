@@ -1,6 +1,6 @@
 # Defines the root of the project.
 # Be aware of how many directories deep you go!
-ROOT = /home/tlelievr/zephyrproject/zephyr
+ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
 
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
@@ -11,10 +11,10 @@ LINK = $(ROOT)/drivers/crypto/crypto_stm32.c
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1
+H_CBMCFLAGS = --nondet-static --verbosity 9 --unwind 1  --unwindset sys_mem_swap.0:3
 
 # Extra header defintiions to be passed during compilation
-H_DEF = -DCONFIG_CRYPTO_STM32_MAX_SESSION=1
+H_DEF = -DCONFIG_CRYPTO_STM32_MAX_SESSION=1 
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
