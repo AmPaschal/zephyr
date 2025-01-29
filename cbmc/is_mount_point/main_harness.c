@@ -1,9 +1,12 @@
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-#define PATH_MAX        4096	/* # chars in a path name including nul */
+#define PATH_MAX        6	/* # chars in a path name including nul */
+
+bool is_mount_point(const char *path);
 
 char* dirname(char* path) {
 
@@ -15,30 +18,13 @@ char* dirname(char* path) {
 
 	char* ret = malloc(sizeof(char) * size);
 
+	__CPROVER_assume(ret != NULL);
+
 	// Determine if we need to add null character:
 
 	ret[size - 1] = '\0';
 
 	return ret;
-}
-
-bool is_mount_point(const char *path)
-{
-	char dir_path[PATH_MAX];
-	size_t len;
-
-	// sprintf(dir_path, "%s", path);
-
-	strcpy(dir_path, path);
-
-	// len = strlen(path);
-	// if (len >=  sizeof(dir_path)) {
-	// 	return false;
-	// }
-
-	// memcpy(dir_path, path, len);
-	// dir_path[len] = '\0';
-	return strcmp(dirname(dir_path), "/") == 0;
 }
 
 int harness() {
@@ -52,12 +38,29 @@ int harness() {
 	__CPROVER_assume(size > 0);
 
 	char* path = malloc(sizeof(char) * size);
+	__CPROVER_assume(path != NULL);
 
 	// Need to add null character to string:
 
 	path[size - 1] = '\0';
 
-	bool res = is_mount_point(path);
+	is_mount_point(path);
+}
+
+bool is_mount_point(const char *path)
+{
+	char dir_path[PATH_MAX];
+	size_t len;
+
+	len = strlen(path);
+	if (len >=  sizeof(dir_path)) {
+		return false;
+	}
+
+	memcpy(dir_path, path, len);
+	dir_path[len] = '\0';
+	// sprintf(dir_path, "%s", path);
+	return strcmp(dirname(dir_path), "/") == 0;
 }
 
 int main() {

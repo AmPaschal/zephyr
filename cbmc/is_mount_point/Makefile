@@ -1,17 +1,17 @@
 # Defines the root of the project.
 # Be aware of how many directories deep you go!
-ROOT = /home/owen/zephyrproject/zephyr
+ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
 
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
 # Each file is space seperated, and multiple can be defined
-LINK = 
+LINK = #$(ROOT)/subsys/fs/fuse_fs_access.c
 
 # Harness to utilize, omit the extension!
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset strcmp.0:10 --unwindset strlen.0:10 --unwindset strcpy.0:50
+H_CBMCFLAGS = --nondet-static --unwind 1 --verbosity 9 --unwindset strcmp.0:10 --unwindset strlen.0:10 --unwindset strcpy.0:10
 
 # Extra header defintiions to be passed during compilation
 H_DEF = 
@@ -22,7 +22,9 @@ H_INC = \
 	-I$(ROOT)/boards/native/native_posix \
 	-I$(ROOT)/include \
 	-I. \
-	-Ibuild/zephyr/include/generated
+	-Ibuild/zephyr/include/generated \
+	-I/usr/include \
+	-I$(ROOT)/include/zephyr/posix \
 
 # Include our special build file
 include ./Makefile.include
