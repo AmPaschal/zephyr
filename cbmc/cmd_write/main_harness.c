@@ -6,7 +6,7 @@
 
 extern struct settings_store *settings_save_dst;
 
-void shell_error_impl(const struct shell *sh, const char *fmt, ...) {}
+// void shell_error_impl(const struct shell *sh, const char *fmt, ...) {}
 
 int dummy_csi_save(struct settings_store *cs, const char *name,
 			const char *value, size_t val_len) {}

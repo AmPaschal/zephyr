@@ -5,7 +5,7 @@ ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
 # Each file is space seperated, and multiple can be defined
-LINK = $(ROOT)/subsys/settings/src/settings_shell.c $(ROOT)/lib/utils/hex.c $(ROOT)/subsys/settings/src/settings_store.c
+LINK = $(ROOT)/subsys/settings/src/settings_shell.c # $(ROOT)/lib/utils/hex.c $(ROOT)/subsys/settings/src/settings_store.c
 
 # Harness to utilize, omit the extension!
 H_ENTRY = main
