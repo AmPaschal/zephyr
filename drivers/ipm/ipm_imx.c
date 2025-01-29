@@ -161,7 +161,7 @@ static void imx_mu_isr(const struct device *dev)
 #endif
 }
 
-static int imx_mu_ipm_send(const struct device *dev, int wait, uint32_t id,
+int imx_mu_ipm_send(const struct device *dev, int wait, uint32_t id,
 			   const void *data, int size)
 {
 	const struct imx_mu_config *config = dev->config;
