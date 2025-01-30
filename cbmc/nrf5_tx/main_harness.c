@@ -6,11 +6,12 @@
 
 #include "ieee802154/ieee802154_nrf5.h"
 
-void nrf5_tx_started(const struct device *dev,
-			    struct net_pkt *pkt,
-			    struct net_buf *frag) {
-					
-				}
+extern struct nrf5_802154_data nrf5_data;
+
+void nrf5_data_cb(const struct device *dev,
+				      enum ieee802154_event evt,
+				      void *event_params);
+
 
 // Added this stub to resolve errors in the net_pkt.h file
 struct net_pkt *net_pkt_rx_alloc_with_buffer_debug(struct net_if *iface,
@@ -22,7 +23,6 @@ struct net_pkt *net_pkt_rx_alloc_with_buffer_debug(struct net_if *iface,
 						   int line) {
 
 							struct net_pkt *pkt = malloc(sizeof(struct net_pkt));
-							// __CPROVER_assume(pkt != NULL); // Commented this out to improve coverage of the present null validation
 							return pkt;
 }
 
@@ -66,6 +66,9 @@ int harness() {
 	// Unconstrained enum
 
 	enum ieee802154_tx_mode mode;
+
+	// Model function pointer in global var
+	nrf5_data.event_handler = nrf5_data_cb;
 
 	int res = nrf5_tx(&dev, mode, &pkt, &frag);
 }

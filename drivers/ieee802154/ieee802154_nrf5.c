@@ -62,7 +62,7 @@ struct nrf5_802154_config {
 	void (*irq_config_func)(const struct device *dev);
 };
 
-static struct nrf5_802154_data nrf5_data;
+struct nrf5_802154_data nrf5_data;
 #if defined(CONFIG_IEEE802154_RAW_MODE)
 static const struct device *nrf5_dev;
 #endif
@@ -570,10 +570,10 @@ int nrf5_tx(const struct device *dev,
 	uint8_t *payload = frag->data;
 	bool ret = true;
 
-	// if (payload_len > IEEE802154_MTU) {  // No check to ensure payload length is large enough
-	// 	LOG_ERR("Payload too large: %d", payload_len);
-	// 	return -EMSGSIZE;
-	// }
+	if (payload_len > IEEE802154_MTU) {  // Remove check to ensure payload length is large enough to trigger vuln
+		LOG_ERR("Payload too large: %d", payload_len);
+		return -EMSGSIZE;
+	}
 
 	LOG_DBG("%p (%u)", payload, payload_len);
 
