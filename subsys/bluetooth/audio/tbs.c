@@ -1796,6 +1796,8 @@ static void tbs_inst_remote_incoming(struct service_inst *inst, const char *to, 
 		inst->friendly_name.call_index = call->index;
 		utf8_lcpy(inst->friendly_name.uri, friendly_name, sizeof(inst->friendly_name.uri));
 		friend_name_ind_len = strlen(from) + 1;
+		// (void)strcpy(inst->friendly_name.uri, friendly_name); /* VULN */
+		// friend_name_ind_len = strlen(from) + 1;
 
 		bt_gatt_notify_uuid(NULL, BT_UUID_TBS_FRIENDLY_NAME, inst->attrs,
 				    &inst->friendly_name, friend_name_ind_len);
