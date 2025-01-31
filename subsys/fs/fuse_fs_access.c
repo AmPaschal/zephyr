@@ -183,37 +183,41 @@ int fuse_fs_access_readdir(const char *path, void *buf,
 		 * directory but FUSE strips the trailing slashes from
 		 * directory names so add it back.
 		 */
-		char mount_path[256];
+		char mount_path[PATH_MAX];
+
+		// Uncomment following lines to recreate vuln
 
 		// sprintf(mount_path, "%s/", path);  // Is not implemented will in Zephyre libc
 
-		// Create new string to copy:
+		// // Create new string to copy:
 
-		// Allocate new string with / char:
+		// // Allocate new string with / char:
 
-		int slen = strlen(path);
+		// int slen = strlen(path);
 
-		char *nstring = malloc(slen + 2);
+		// char *nstring = malloc(slen + 2);
 
-		// Copy old contents over:
+		// __CPROVER_assume(nstring != NULL);
 
-		strcpy(nstring, path);
+		// // Copy old contents over:
 
-		// Set the final character:
+		// strcpy(nstring, path);
 
-		nstring[slen] = "/";
-		nstring[slen + 1] = "\0";
+		// // Set the final character:
 
-		strcpy(mount_path, nstring);
+		// nstring[slen] = "/";
+		// nstring[slen + 1] = "\0";
 
-		// size_t len = strlen(path);
+		// strcpy(mount_path, nstring);
 
-		// if (len >= (PATH_MAX - 2)) {
-		// 	return -ENOMEM;
-		// }
+		size_t len = strlen(path);
 
-		// memcpy(mount_path, path, len);
-		// mount_path[len] = '/';
+		if (len >= (PATH_MAX - 2)) {
+			return -ENOMEM;
+		}
+
+		memcpy(mount_path, path, len);
+		mount_path[len] = '/';
 		err = fs_opendir(&dir, mount_path);
 	} else {
 		err = fs_opendir(&dir, path);

@@ -1,6 +1,6 @@
 # Defines the root of the project.
 # Be aware of how many directories deep you go!
-ROOT = /home/owen/zephyrproject/zephyr
+ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
 
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
@@ -11,7 +11,9 @@ LINK = $(ROOT)/subsys/fs/fuse_fs_access.c
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1 --unwindset strcmp.0:260 --unwindset strlen.0:271 --unwindset fuse_fs_access_readdir.0:20 --unwindset fuse_fs_access_readmount.0:20 --unwindset strcpy.0:300
+H_CBMCFLAGS = --nondet-static --verbosity 9 --unwind 1 \
+	 --unwindset strcmp.0:21 --unwindset strlen.0:21 \
+	 --unwindset __builtin___strcpy_chk.0:21
 
 # Extra header defintiions to be passed during compilation
 H_DEF = -DFUSE_USE_VERSION=30 -D_FILE_OFFSET_BITS=64 -DHAVE_IOVEC=1
