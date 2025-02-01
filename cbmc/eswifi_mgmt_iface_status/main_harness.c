@@ -15,33 +15,39 @@ int harness() {
 
 	// Model device struct
 
-	struct device dev;
+	struct device *dev = malloc(sizeof(struct device));
+
+	__CPROVER_assume(dev != NULL);
 
 	// Create internal wifi device:
 
-	struct eswifi_dev wifi_dev;
+	struct eswifi_dev *wifi_dev = malloc(sizeof(struct eswifi_dev));
+
+	__CPROVER_assume(wifi_dev != NULL);
 
 	// Create bus object:
 
-	struct eswifi_bus_ops bus;
+	struct eswifi_bus_ops *bus = malloc(sizeof(struct eswifi_bus_ops));
+
+	__CPROVER_assume(bus != NULL);
 
 	// Set callback function:
 
-	bus.request = request;
+	bus->request = request;
 
 	// Add bus to wifi device:
 
-	wifi_dev.bus = &bus;
+	wifi_dev->bus = bus;
 
 	// Attach wifi device to the device data:
 
-	dev.data = &wifi_dev;
+	dev->data = wifi_dev;
 
 	// Model wifi struct:
 
 	struct wifi_iface_status status;
 
-	int val = eswifi_mgmt_iface_status(&dev, &status);
+	int val = eswifi_mgmt_iface_status(dev, &status);
 }
 
 int main() {
