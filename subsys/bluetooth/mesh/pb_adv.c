@@ -482,6 +482,12 @@ void gen_prov_cont(struct prov_rx *rx, struct net_buf_simple *buf)
 {
 	uint8_t seg = CONT_SEG_INDEX(rx->gpc);
 
+	// Potential vulnerability
+	if (seg == 0) {
+		LOG_DBG("Invalid segment.");
+		return;
+	}
+
 	if (link.tx.adv[0]) {
 		LOG_DBG("Ongoing tx transaction has not been completed yet");
 		return;
