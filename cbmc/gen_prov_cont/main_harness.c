@@ -5,38 +5,6 @@
 #include "zephyr/bluetooth/mesh/main.h"
 #include "zephyr/net/buf.h"
 
-void bt_test_mesh_prov_invalid_bearer(uint8_t opcode) {
-	return;
-}
-
-// static void gen_prov_ack_send(uint8_t xact_id) {
-// 	return;
-// }
-
-// static void delayed_adv_send_end(int err, void *user_data) {
-// 	return;
-// }
-
-// static void delayed_adv_send_start(uint16_t duration, int err, void *user_data)
-// {
-// 	return;
-// }
-
-// static void prov_msg_recv(void)
-// {
-// 	return;
-// }
-
-// static void prov_clear_tx(void)
-// {
-// 	return;
-// }
-
-// struct prov_rx {
-// 	uint32_t link_id;
-// 	uint8_t xact_id;
-// 	uint8_t gpc;
-// };
 
 static void link_opened(const struct prov_bearer *bearer, void *cb_data) {
 	return;
@@ -70,18 +38,31 @@ int harness() {
 	extern struct pb_adv link;
 	link.cb = &cb_funcs;
 
-	uint16_t link_buf_len;
+	uint16_t link_buf_size;
+	__CPROVER_assume(link_buf_size >= RX_BUFFER_MAX);
 	struct net_buf_simple link_buf;
-	link_buf.data = (uint8_t*) malloc(link_buf_len);
+	link_buf.data = (uint8_t*) malloc(link_buf_size);
+	__CPROVER_assume(link_buf.data != NULL);
+	link_buf.size = link_buf_size;
+	uint16_t link_buf_len;
+	__CPROVER_assume(link_buf_len < link_buf_size);
 	link_buf.len = link_buf_len;
+	link_buf.__buf = link_buf.data;
 	link.rx.buf = &(link_buf);
 
+
 	struct prov_rx rx;
+	
 	struct net_buf_simple buf;
+	uint16_t size;
+	__CPROVER_assume(size > 0);
+	buf.data = (uint8_t*) malloc(size);
+	__CPROVER_assume(buf.data != NULL);
+	buf.size = size;
 	uint16_t len;
-	__CPROVER_assume(len <= 100);
-	buf.data = (uint8_t*) malloc(len);
+	__CPROVER_assume(len <= size);
 	buf.len = len;
+	buf.__buf = buf.data;
 
 	gen_prov_cont(&rx, &buf);
 }
