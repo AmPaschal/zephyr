@@ -78,7 +78,7 @@ static bool is_pkt_ptr_valid(const void *ptr)
 	return false;
 }
 
-static struct net_pkt *get_net_pkt(const char *ptr_str)
+struct net_pkt *get_net_pkt(const char *ptr_str)
 {
 	uint8_t buf[sizeof(intptr_t)];
 	intptr_t ptr = 0;
@@ -144,7 +144,7 @@ static void net_pkt_buffer_hexdump(const struct shell *sh,
 	}
 }
 
-static int cmd_net_pkt(const struct shell *sh, size_t argc, char *argv[])
+int cmd_net_pkt(const struct shell *sh, size_t argc, char *argv[])
 {
 	struct net_pkt *pkt;
 
