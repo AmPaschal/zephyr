@@ -1,6 +1,6 @@
 # Defines the root of the project.
 # Be aware of how many directories deep you go!
-ROOT = /home/tlelievr/zephyrproject/zephyr
+ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
 
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
@@ -11,7 +11,7 @@ LINK = $(ROOT)/subsys/bluetooth/mesh/pb_adv.c
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --unwind 1
+H_CBMCFLAGS = --nondet-static --verbosity 9 --unwind 1
 
 # Extra header defintiions to be passed during compilation
 H_DEF = -DCONFIG_BT_MESH_USES_TINYCRYPT=y -DCONFIG_BT_MESH_PB_ADV_RETRANS_TIMEOUT=500 -DCONFIG_BT_MESH_PB_ADV_TRANS_ACK_RETRANSMIT_COUNT=1 -DCONFIG_BT_MESH_PB_ADV_TRANS_PDU_RETRANSMIT_COUNT=1 -DCONFIG_BT_MESH_PB_ADV_LINK_CLOSE_RETRANSMIT_COUNT=1 -DCONFIG_BT_MESH=y

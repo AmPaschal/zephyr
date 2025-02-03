@@ -38,18 +38,26 @@ int harness() {
 	extern struct pb_adv link;
 	link.cb = &cb_funcs;
 
-	uint16_t link_buf_len;
+	uint16_t link_buf_size;
 	struct net_buf_simple link_buf;
-	link_buf.data = (uint8_t*) malloc(link_buf_len);
-	link_buf.len = link_buf_len;
+	link_buf.data = (uint8_t*) malloc(link_buf_size);
+	__CPROVER_assume(link_buf.data != NULL);
+	link_buf.__buf = link_buf.data;
+	link_buf.size = link_buf_size;
 	link.rx.buf = &(link_buf);
 
 	struct prov_rx rx;
 	struct net_buf_simple buf;
+	uint16_t size;
+	
+	buf.data = (uint8_t*) malloc(size);
+	__CPROVER_assume(buf.data != NULL);
+	buf.size = size;
 	uint16_t len;
-	__CPROVER_assume(len <= 100);
-	buf.data = (uint8_t*) malloc(len);
+	__CPROVER_assume(len <= size);
+	__CPROVER_assume(len <= link_buf_size); // This is not upheld, potential bug
 	buf.len = len;
+
 
 	gen_prov_start(&rx, &buf);
 }
