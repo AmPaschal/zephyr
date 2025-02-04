@@ -176,10 +176,10 @@ struct net_buf *bt_buf_get_tx(enum bt_buf_type type, k_timeout_t timeout,
 
 	if (data && size) {
 		// Recreating CVE-2021-3835
-		// if (net_buf_tailroom(buf) < size) {
-		// 	net_buf_unref(buf);
-		// 	return NULL;
-		// }
+		if (net_buf_tailroom(buf) < size) {
+			net_buf_unref(buf);
+			return NULL;
+		}
 
 		net_buf_add_mem(buf, data, size);
 	}
