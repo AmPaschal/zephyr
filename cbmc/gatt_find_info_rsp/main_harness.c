@@ -31,14 +31,10 @@ int harness() {
 
 	uint16_t length;
 
-	__CPROVER_assume(length <= 200);
-
 	// The 3rd argument is actually pointing to a buffer containing a header and a payload.
 	// Reviewing the function shows that the function tries to read beyond the bounds of the initial struct, until it reads all of length (4th argument)
 	
 	struct bt_att_find_info_rsp pdu;
-
-	// __CPROVER_assume(pdu.format == 1);
 	
 	uint8_t *pointer = (struct bt_att_find_info_rsp *) malloc(length);
 
