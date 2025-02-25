@@ -23,15 +23,6 @@
 
 void smp_pairing_complete(struct bt_smp *smp, uint8_t status) {}
 
-// void *net_buf_simple_add(struct net_buf_simple *buf, size_t len) {
-
-// 	// Return unconstrained bt_smp_hdr struct:
-
-// 	struct bt_smp_hdr* res = (struct bt_smp_hdr*)malloc(sizeof(struct bt_smp_hdr));
-
-// 	return res;
-// }
-
 struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool, k_timeout_t timeout) {
 
 	// Allocate buffer:
@@ -40,10 +31,12 @@ struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool, k_timeout_t timeo
 	__CPROVER_assume(buflen > sizeof(struct net_buf));
 
 	struct net_buf *buf = (struct net_buf *)malloc(buflen);
-	__CPROVER_assume(buf != NULL);
+	
+	if (buf == NULL) {
+		return NULL;
+	}
 
 	uint8_t size;
-	__CPROVER_assume(size > 0);
 	buf->data = malloc(size);
 	__CPROVER_assume(buf->data != NULL);
 	buf->__buf = buf->data;
@@ -56,11 +49,6 @@ struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool, k_timeout_t timeo
 
 	return buf;
 }
-
-// void net_buf_simple_reserve(struct net_buf_simple *buf, size_t reserve) {
-
-// 	buf->data = buf->__buf + reserve;
-// }
 
 struct net_buf *bt_l2cap_create_pdu_timeout(struct net_buf_pool *pool, size_t reserve, k_timeout_t timeout) {
 
@@ -182,18 +170,11 @@ int harness() {
 	struct bt_conn *conn = malloc(sizeof(struct bt_conn));
 	__CPROVER_assume(conn != NULL);
 
-	// sys_slist_t *list = malloc(sizeof(sys_slist_t));
-	// __CPROVER_assume(list != NULL);
-	// conn->l2cap_data_ready = list;
 	if (conn != NULL) {
 		conn->l2cap_data_ready.tail = malloc(sizeof(sys_snode_t));
 		conn->l2cap_data_ready.head = malloc(sizeof(sys_snode_t));
 	}
 	bts.chan.chan.conn = conn;
-
-	// struct bt_l2cap_le_chan *le_chan
-
-	// Model input reason:
 
 	uint8_t reason;
 
