@@ -41,8 +41,9 @@ int harness() {
 	__CPROVER_assume(ddata != NULL);
 
 	// Correctly model the ac frame:
+	uint8_t acsize;
 
-	ddata->ack_frame.psdu = malloc(10);
+	ddata->ack_frame.psdu = malloc(acsize);
 
 	// Set driver into the data:
 
@@ -53,8 +54,6 @@ int harness() {
 	// Create and model network buffer
 
 	uint16_t fsize;
-
-	__CPROVER_assume(fsize <= 200);
 
 	struct net_buf frag;
 
