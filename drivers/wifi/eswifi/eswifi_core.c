@@ -146,6 +146,7 @@ int eswifi_at_cmd_rsp(struct eswifi_dev *eswifi, char *cmd, char **rsp)
 		LOG_WRN("Data length %d", len);
 		LOG_WRN("See CONFIG_WIFI_ESWIFI_MAX_DATA_SIZE (in build: %d)",
 			CONFIG_WIFI_ESWIFI_MAX_DATA_SIZE);
+		return -EIO; // Return an error if this validation fails
 	}
 
 	/*
@@ -164,12 +165,6 @@ int eswifi_at_cmd_rsp(struct eswifi_dev *eswifi, char *cmd, char **rsp)
 
 	/* Check end characters */
 	for (i = len - sizeof(endstr); i > 0; i--) {
-
-		// Ensure our length does not exceed size:
-
-		if (i + 7 >= CONFIG_WIFI_ESWIFI_MAX_DATA_SIZE) {
-			return -EINVAL;
-		}
 
 		if (!strncmp(&eswifi->buf[i], endstr, 7)) {
 			if (rsp) {
