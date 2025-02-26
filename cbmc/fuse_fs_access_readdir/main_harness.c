@@ -50,8 +50,6 @@ int harness() {
 
 	uint16_t bsize;
 
-	__CPROVER_assume(0 < bsize);
-
 	uint8_t* buf = malloc(bsize);
 
 	// Unconstrained fuse file info:
