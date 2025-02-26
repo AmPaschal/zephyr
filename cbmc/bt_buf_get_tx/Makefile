@@ -1,6 +1,6 @@
 # Defines the root of the project.
 # Be aware of how many directories deep you go!
-ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
+ROOT ?= ../..
 
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
@@ -24,5 +24,14 @@ H_DEF = -DCONFIG_BT_BUF_EVT_RX_COUNT=2 -DCONFIG_BT_BUF_ACL_RX_COUNT=2 -DCONFIG_B
 H_INC = -I$(ROOT)/subsys/usb/device \
 		-I$(ROOT)/include \
 
+
+C_INC = \
+	-include $(ROOT)/cbmc/include/zephyr/autoconf.h \
+	-I$(ROOT)/cbmc/include \
+	-I$(ROOT)/include \
+	-I$(ROOT)/boards/native/native_posix \
+	# empty
+
 # Include our special build file
-include ../Makefile.include
+MAKE_INCLUDE_PATH ?= ..
+include $(MAKE_INCLUDE_PATH)/Makefile.include
