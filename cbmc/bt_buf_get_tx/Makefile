@@ -6,7 +6,7 @@ ROOT ?= ../..
 # (We recommend $(ROOT)/os/... for defining these paths)
 # Each file is space seperated, and multiple can be defined
 LINK = $(ROOT)/subsys/bluetooth/host/hci_raw.c \
-  $(ROOT)/cbmc/proofs/usb/bluetooth/buf_stub.c
+  $(ROOT)/cbmc/bt_buf_get_tx/buf_stub.c
 
 # Harness to utilize, omit the extension!
 H_ENTRY = btclass

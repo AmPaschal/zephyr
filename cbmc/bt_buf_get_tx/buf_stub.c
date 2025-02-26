@@ -10,7 +10,9 @@ struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool,
     uint8_t net_buf_size;
     __CPROVER_assume(net_buf_size > sizeof(struct net_buf));
 	struct net_buf *buf = malloc(net_buf_size);
-    __CPROVER_assume(buf != NULL);
+    if (buf == NULL) {
+        return buf;
+    }
 
     buf->user_data_size = net_buf_size - sizeof(struct net_buf);
 
@@ -18,16 +20,6 @@ struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool,
     __CPROVER_assume(size > 0 && size < 100);
     uint8_t *data = malloc(size);   
     __CPROVER_assume(data != NULL);
-
-    // bool union_decider;
-
-    // if (union_decider)
-
-    // buf->b.data = data;
-    // buf->b.len = 0;
-    // buf->b.size = size;
-    // buf->b.__buf = data;
-
 
     buf->__buf = data;
     buf->data = buf->__buf;
