@@ -1,11 +1,10 @@
 # Defines the root of the project.
 # Be aware of how many directories deep you go!
-ROOT = /home/pamusuo/research/cbmc-research/zephyrproject/zephyr
-
+ROOT = ../..
 # Defines file(s) to link to harness, MUST be a full path!
 # (We recommend $(ROOT)/os/... for defining these paths)
 # Each file is space seperated, and multiple can be defined
-LINK = $(ROOT)/subsys/bluetooth/mesh/pb_adv.c
+LINK = #$(ROOT)/subsys/bluetooth/mesh/pb_adv.c
 
 # Harness to utilize, omit the extension!
 H_ENTRY = main
@@ -25,4 +24,5 @@ H_INC = \
 	-Ibuild/zephyr/include/generated
 
 # Include our special build file
-include ./Makefile.include
+MAKE_INCLUDE_PATH ?= ..
+include $(MAKE_INCLUDE_PATH)/Makefile.include

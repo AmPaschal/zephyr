@@ -55,7 +55,6 @@ int harness() {
 	
 	struct net_buf_simple buf;
 	uint16_t size;
-	__CPROVER_assume(size > 0);
 	buf.data = (uint8_t*) malloc(size);
 	__CPROVER_assume(buf.data != NULL);
 	buf.size = size;
