@@ -626,12 +626,12 @@ void gen_prov_start(struct prov_rx *rx, struct net_buf_simple *buf)
 		return;
 	}
 
-	// if (START_LAST_SEG(rx->gpc) != last_seg(link.rx.buf->len)) {
-	// 	LOG_ERR("Invalid SegN (%u, calculated %u)", START_LAST_SEG(rx->gpc),
-	// 		last_seg(link.rx.buf->len));
-	// 	prov_failed(PROV_ERR_NVAL_FMT);
-	// 	return;
-	// }
+	if (START_LAST_SEG(rx->gpc) != last_seg(link.rx.buf->len)) {
+		LOG_ERR("Invalid SegN (%u, calculated %u)", START_LAST_SEG(rx->gpc),
+			last_seg(link.rx.buf->len));
+		prov_failed(PROV_ERR_NVAL_FMT);
+		return;
+	}
 
 	prov_clear_tx();
 
