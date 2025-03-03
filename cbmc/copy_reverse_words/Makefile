@@ -24,6 +24,8 @@ H_INC = \
 	-I$(ROOT)/include \
 	-Ibuild/zephyr/include/generated
 
+BOARD=mikroe_mini_m4_for_stm32
+
 # Include our special build file
 MAKE_INCLUDE_PATH ?= ..
 include $(MAKE_INCLUDE_PATH)/Makefile.include
