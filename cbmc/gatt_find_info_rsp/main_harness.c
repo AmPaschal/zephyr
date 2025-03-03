@@ -34,21 +34,18 @@ int harness() {
 	// The 3rd argument is actually pointing to a buffer containing a header and a payload.
 	// Reviewing the function shows that the function tries to read beyond the bounds of the initial struct, until it reads all of length (4th argument)
 	
-	struct bt_att_find_info_rsp pdu;
-	
-	uint8_t *pointer = (struct bt_att_find_info_rsp *) malloc(length);
+	__CPROVER_assume(length > sizeof(struct bt_att_find_info_rsp));
 
-	__CPROVER_assume(pointer != NULL);
+	struct bt_att_find_info_rsp *pdu = malloc(length);
 
-	pdu.info = pointer;
-
+	__CPROVER_assume(pdu != NULL);
 	
 	// Define an unconstrained bt_gatt_discover_params (gets copied internally)
 
 	struct bt_gatt_discover_params user_data;
 	user_data.func = bt_gatt_discover_func;
 
-	gatt_find_info_rsp(&conn, err, &pdu, length, &user_data);
+	gatt_find_info_rsp(&conn, err, pdu, length, &user_data);
 }
 
 int main() {
