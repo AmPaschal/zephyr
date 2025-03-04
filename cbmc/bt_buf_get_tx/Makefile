@@ -32,6 +32,8 @@ C_INC = \
 	-I$(ROOT)/boards/native/native_posix \
 	# empty
 
+ENABLE_BUILD = 0
+
 # Include our special build file
 MAKE_INCLUDE_PATH ?= ..
 include $(MAKE_INCLUDE_PATH)/Makefile.include
