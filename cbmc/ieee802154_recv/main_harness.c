@@ -22,7 +22,9 @@ struct net_pkt *net_pkt_alloc_with_buffer_debug(struct net_if *iface,
 						int line) {
 
 							struct net_pkt *pkt = malloc(sizeof(struct net_pkt));
-							__CPROVER_assume(pkt != NULL);
+							if (pkt == NULL) {
+								return pkt;
+							}
 
 							struct net_buf* buf = malloc(sizeof(struct net_buf));
 							__CPROVER_assume(buf != NULL);
@@ -74,7 +76,6 @@ int harness() {
 	__CPROVER_assume(pkt != NULL);
 
 	uint8_t len;
-	__CPROVER_assume(len < 100);
 	uint8_t* srcaddr = (uint8_t*) malloc(len);
 	__CPROVER_assume(srcaddr != NULL);
 	pkt->lladdr_src.addr = srcaddr;

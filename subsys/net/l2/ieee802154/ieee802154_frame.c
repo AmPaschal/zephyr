@@ -425,17 +425,17 @@ bool ieee802154_validate_frame(uint8_t *buf, uint8_t length, struct ieee802154_m
 		return false;
 	}
 
-	// if (!validate_addr(p_buf, &p_buf, &length, mpdu->mhr.fs->fc.dst_addr_mode, false,
-	// 		   &mpdu->mhr.dst_addr) ||
-	//     !validate_addr(p_buf, &p_buf, &length, mpdu->mhr.fs->fc.src_addr_mode,
-	// 		   (mpdu->mhr.fs->fc.pan_id_comp), &mpdu->mhr.src_addr)) {
-	// 	return false;
-	// }
-	validate_addr(p_buf, &p_buf, &length, mpdu->mhr.fs->fc.dst_addr_mode, false,
-	 		   &mpdu->mhr.dst_addr);
+	if (!validate_addr(p_buf, &p_buf, &length, mpdu->mhr.fs->fc.dst_addr_mode, false,
+			   &mpdu->mhr.dst_addr) ||
+	    !validate_addr(p_buf, &p_buf, &length, mpdu->mhr.fs->fc.src_addr_mode,
+			   (mpdu->mhr.fs->fc.pan_id_comp), &mpdu->mhr.src_addr)) {
+		return false;
+	}
+	// validate_addr(p_buf, &p_buf, &length, mpdu->mhr.fs->fc.dst_addr_mode, false,
+	//  		   &mpdu->mhr.dst_addr);
 
-	validate_addr(p_buf, &p_buf, &length, mpdu->mhr.fs->fc.src_addr_mode,
-				(mpdu->mhr.fs->fc.pan_id_comp), &mpdu->mhr.src_addr);
+	// validate_addr(p_buf, &p_buf, &length, mpdu->mhr.fs->fc.src_addr_mode,
+	// 			(mpdu->mhr.fs->fc.pan_id_comp), &mpdu->mhr.src_addr);
 
 #ifdef CONFIG_NET_L2_IEEE802154_SECURITY
 	if (mpdu->mhr.fs->fc.security_enabled) {
