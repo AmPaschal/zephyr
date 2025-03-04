@@ -115,7 +115,7 @@ static void tgta_update(struct ll_adv_set *adv, struct pdu_adv *pdu);
 static void init_pdu(struct pdu_adv *pdu, uint8_t pdu_type);
 static void init_set(struct ll_adv_set *adv);
 
-static struct ll_adv_set ll_adv[BT_CTLR_ADV_SET];
+struct ll_adv_set ll_adv[BT_CTLR_ADV_SET];
 
 static uint8_t ticker_update_req;
 static uint8_t ticker_update_ack;
@@ -1890,13 +1890,14 @@ uint8_t ull_scan_rsp_set(struct ll_adv_set *adv, uint8_t len,
 	struct pdu_adv *pdu;
 	uint8_t idx;
 
-	// if (len > PDU_AC_LEG_DATA_SIZE_MAX) {
-	// 	return BT_HCI_ERR_INVALID_PARAM;
-	// }
+	// Uncomment to recreate CVE-2021-3581
+	if (len > PDU_AC_LEG_DATA_SIZE_MAX) {
+		return BT_HCI_ERR_INVALID_PARAM;
+	}
 
 	/* update scan pdu fields. */
 	prev = lll_adv_scan_rsp_peek(&adv->lll);
-	if (!prev) {
+	if (prev == NULL) {
 		uint8_t err;
 
 		err = lll_adv_data_init(&adv->lll.scan_rsp);

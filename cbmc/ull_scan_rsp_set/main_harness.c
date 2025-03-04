@@ -52,29 +52,10 @@
 #include "ll_sw/ull_conn_iso_types.h"
 #include "ll_sw/ull_llcp.h"
 
-uint8_t ull_adv_time_update(struct ll_adv_set *adv, struct pdu_adv *pdu,
-			    struct pdu_adv *pdu_scan)
-{
-	uint8_t rand;
-	return rand;
-}
+extern struct ll_adv_set ll_adv[BT_CTLR_ADV_SET];
 
-struct pdu_adv* lll_adv_scan_rsp_alloc(struct lll_adv *lll,
+struct pdu_adv* lll_adv_pdu_alloc(struct lll_adv *lll,
 						     uint8_t *idx)
-{
-	struct pdu_adv* new_pdu = malloc(sizeof(struct pdu_adv));
-	__CPROVER_assume(new_pdu != NULL);
-	return new_pdu;
-}
-
-struct pdu_adv* lll_adv_scan_rsp_peek(struct lll_adv *lll)
-{
-	struct pdu_adv* new_pdu = malloc(sizeof(struct pdu_adv));
-	__CPROVER_assume(new_pdu != NULL);
-	return new_pdu;
-}
-
-struct pdu_adv *lll_adv_data_peek(struct lll_adv *lll)
 {
 	struct pdu_adv* new_pdu = malloc(sizeof(struct pdu_adv));
 	__CPROVER_assume(new_pdu != NULL);
@@ -83,26 +64,43 @@ struct pdu_adv *lll_adv_data_peek(struct lll_adv *lll)
 
 int harness() {
 
-	// uint8_t size;
-	// __CPROVER_assume(size > sizeof(struct node_rx_pdu) + sizeof(struct pdu_adv));
-	// struct node_rx_pdu *rx = malloc(size);
-	// __CPROVER_assume(rx != NULL);
 
 	//Presumably, data buffer input length
 	uint8_t len;
-	__CPROVER_assume(len <= 100);
 
 	//Data buffer
 	uint8_t* data = malloc(len);
 	__CPROVER_assume(data != NULL);
 
 
-	uint8_t pdu_size;
-	__CPROVER_assume(pdu_size > sizeof(struct ll_adv_set) + (2 * sizeof(struct pdu_adv))); //PDU size is expected to be len + BDADDR (which is 6)
-	struct ll_adv_set *adv = malloc(pdu_size);
-	// __CRPOVER_assume(adv -> lll.scan_rsp.first <= 1);
-	// __CRPOVER_assume(adv -> lll.scan_rsp.last <= 1);
-	__CPROVER_assume(adv != NULL);
+	uint8_t pdu_offset;
+	__CPROVER_assume(pdu_offset < BT_CTLR_ADV_SET);
+	struct ll_adv_set *adv = ll_adv + (pdu_offset * sizeof(struct ll_adv_set));
+
+
+	__CPROVER_assume(adv->lll.scan_rsp.last < DOUBLE_BUFFER_SIZE);
+
+	uint8_t pdulen;
+	__CPROVER_assume(pdulen > sizeof(struct pdu_adv));
+	uint8_t *pdu1 = malloc(pdulen);
+	__CPROVER_assume(pdu1 != NULL);
+	uint8_t *pdu2 = malloc(pdulen);
+	__CPROVER_assume(pdu2 != NULL);
+
+	adv->lll.scan_rsp.pdu[0] = pdu1;
+	adv->lll.scan_rsp.pdu[1] = pdu2;
+
+	__CPROVER_assume(adv->lll.adv_data.last < DOUBLE_BUFFER_SIZE);
+
+	uint8_t pdulen1;
+	__CPROVER_assume(pdulen1 > sizeof(struct pdu_adv));
+	uint8_t *pdu11 = malloc(pdulen1);
+	__CPROVER_assume(pdu11 != NULL);
+	uint8_t *pdu21 = malloc(pdulen);
+	__CPROVER_assume(pdu21 != NULL);
+
+	adv->lll.adv_data.pdu[0] = pdu11;
+	adv->lll.adv_data.pdu[1] = pdu21;
 
 	ull_scan_rsp_set(adv, len, data);
 }
