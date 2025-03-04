@@ -317,21 +317,21 @@ void usb_handle_control_transfer(uint8_t ep,
 		usb_dev.data_buf_len = 0;
 		usb_dev.data_buf_residue = 0;
 
-		// if (usb_reqtype_is_to_device(setup)) {
-		// 	if (setup->wLength > CONFIG_USB_REQUEST_BUFFER_SIZE) {
-		// 		LOG_ERR("Request buffer too small");
-		// 		usb_dc_ep_set_stall(USB_CONTROL_EP_IN);
-		// 		usb_dc_ep_set_stall(USB_CONTROL_EP_OUT);
-		// 		return;
-		// 	}
+		if (usb_reqtype_is_to_device(setup)) {
+			if (setup->wLength > CONFIG_USB_REQUEST_BUFFER_SIZE) {
+				LOG_ERR("Request buffer too small");
+				usb_dc_ep_set_stall(USB_CONTROL_EP_IN);
+				usb_dc_ep_set_stall(USB_CONTROL_EP_OUT);
+				return;
+			}
 
-		// 	if (setup->wLength) {
-		// 		/* Continue with data OUT stage */
-		// 		usb_dev.data_buf_len = setup->wLength;
-		// 		usb_dev.data_buf_residue = setup->wLength;
-		// 		return;
-		// 	}
-		// }
+			if (setup->wLength) {
+				/* Continue with data OUT stage */
+				usb_dev.data_buf_len = setup->wLength;
+				usb_dev.data_buf_residue = setup->wLength;
+				return;
+			}
+		}
 		
 
 		/* Ask installed handler to process request */

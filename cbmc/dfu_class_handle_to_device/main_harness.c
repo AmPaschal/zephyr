@@ -20,12 +20,11 @@ int harness() {
 
 	int32_t data_len;
 
-	__CPROVER_assume(data_len > 0 && data_len < 100);
-
 	uint8_t *data = malloc(data_len);
 
 	__CPROVER_assume(data != NULL);
 
+	// Uncomment to recreate CVE-2021-3625
 	__CPROVER_assume(setup->wLength <= MIN(data_len, USB_DFU_MAX_XFER_SIZE));
 
 	// Call target function
