@@ -155,24 +155,23 @@ void ull_periph_setup(struct node_rx_pdu *rx, struct node_rx_ftr *ftr,
 		return;
 	}
 	lll->data_chan_hop = pdu_adv->connect_ind.hop;
-	// lll->interval = sys_le16_to_cpu(pdu_adv->connect_ind.interval);
-	if (
+	lll->interval = sys_le16_to_cpu(pdu_adv->connect_ind.interval);
+	if ((lll->data_chan_count < CHM_USED_COUNT_MIN) ||
 	    (lll->data_chan_hop < CHM_HOP_COUNT_MIN) ||
-	    (lll->data_chan_hop > CHM_HOP_COUNT_MAX)) {
+	    (lll->data_chan_hop > CHM_HOP_COUNT_MAX) ||
+	    !lll->interval) { // Remove this condition to recreate CVE-2021-3432
 		invalid_release(&adv->ull, lll, link, rx);
 
 		return;
 	}
 
+
 	((struct lll_adv *)ftr->param)->conn = NULL;
-		
-	interval = sys_le16_to_cpu(pdu_adv->connect_ind.interval);
-	lll->interval = interval;
 
 	lll->latency = sys_le16_to_cpu(pdu_adv->connect_ind.latency);
 
 	win_offset = sys_le16_to_cpu(pdu_adv->connect_ind.win_offset);
-	conn_interval_us = interval * CONN_INT_UNIT_US;
+	conn_interval_us = lll->interval * CONN_INT_UNIT_US;
 
 	/* transmitWindowDelay to default calculated connection offset:
 	 * 1.25ms for a legacy PDU, 2.5ms for an LE Uncoded PHY and 3.75ms for

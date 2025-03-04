@@ -73,11 +73,13 @@ int harness() {
 	rx->rx_ftr.extra = rx_ftr_extra;
 
 	// struct node_rx_pdu rx;
-	struct node_rx_ftr ftr;
+	struct node_rx_ftr *ftr = malloc(sizeof(struct node_rx_ftr));
+	__CPROVER_assume(ftr != NULL);
 	struct node_rx_pdu *extra_rx = malloc(size);
 	__CPROVER_assume(extra_rx != NULL);
-	ftr.extra = extra_rx;
-	struct lll_conn lll;
+	ftr->extra = extra_rx;
+	struct lll_conn *lll = malloc(sizeof(struct lll_conn));
+	__CPROVER_assume(lll != NULL);
 
 
 	struct lll_adv ftr_param;
@@ -85,31 +87,23 @@ int harness() {
 	ftr_hdr.parent = malloc(sizeof(struct ll_adv_set));
 	__CPROVER_assume(ftr_hdr.parent != NULL);
 	ftr_param.hdr = ftr_hdr;
-	ftr.param = &(ftr_param);
+	ftr->param = &(ftr_param);
 
 	uint8_t ftr_extra_size;
 	__CPROVER_assume(ftr_extra_size > sizeof(struct node_rx_pdu));
 	struct node_rx_pdu *ftr_extra = malloc(ftr_extra_size);
 	__CPROVER_assume(ftr_extra != NULL);
-	// ftr_extra->pdu = malloc(sizeof(struct node_rx_cs));
-	// __CPROVER_assume(ftr_extra->pdu != NULL);
-	ftr.extra = ftr_extra;
+	ftr->extra = ftr_extra;
 
 	struct lll_hdr lll_struct_hdr;
 	lll_struct_hdr.parent = malloc(sizeof(struct ll_conn));
 	__CPROVER_assume(lll_struct_hdr.parent != NULL);
-	lll.hdr = lll_struct_hdr;
+	lll->hdr = lll_struct_hdr;
 
 	struct node_rx_hdr rx_hdr;
 	rx->hdr = rx_hdr;
 
-	// uint8_t len;
-	// __CPROVER_assume(len <= 100);
-	// void *pdu = malloc(len);
-	// __CPROVER_assume(pdu != NULL);
-	// rx.pdu = pdu;
-
-	ull_periph_setup(rx, &ftr, &lll);
+	ull_periph_setup(rx, ftr, lll);
 }
 
 int main() {
