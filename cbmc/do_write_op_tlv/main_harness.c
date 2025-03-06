@@ -15,27 +15,28 @@ int lwm2m_engine_validate_write_access(struct lwm2m_message *msg,
 	}
 
 int harness() {
-	struct lwm2m_message msg;
+	struct lwm2m_message *msg = malloc(sizeof(struct lwm2m_message));
+	__CPROVER_assume(msg != NULL);
+
 	struct lwm2m_ctx *ctx = malloc(sizeof(struct lwm2m_ctx));
 	__CPROVER_assume(ctx != NULL);
-	msg.ctx = ctx;
+	msg->ctx = ctx;
 
 	struct lwm2m_block_context *block_ctx = malloc(sizeof(struct lwm2m_block_context));
 	__CPROVER_assume(block_ctx != NULL);
-	msg.in.block_ctx = block_ctx;
+	msg->in.block_ctx = block_ctx;
 
 	struct coap_packet *cpkt = malloc(sizeof(struct coap_packet));
 	__CPROVER_assume(cpkt != NULL);
-	msg.in.in_cpkt = cpkt;
+	msg->in.in_cpkt = cpkt;
 
 	uint16_t data_len;
-	__CPROVER_assume(data_len < 100);
 	uint8_t *data = malloc(data_len);
 	__CPROVER_assume(data != NULL);
-	msg.in.in_cpkt->data = data;
-	msg.in.in_cpkt->max_len = data_len;
+	msg->in.in_cpkt->data = data;
+	msg->in.in_cpkt->max_len = data_len;
 
-	do_write_op_tlv(&msg);
+	do_write_op_tlv(msg);
 }
 
 int main() {
