@@ -803,12 +803,12 @@ query_known:
 			}
 
 			// Comment out to recreate CVE-2020-13601
-			// if ((dns_msg->response_position + address_size) >
-			//     dns_msg->msg_size) {
-			// 	/* Too short message */
-			// 	ret = DNS_EAI_FAIL;
-			// 	goto quit;
-			// }
+			if ((dns_msg->response_position + address_size) >
+			    dns_msg->msg_size) {
+				/* Too short message */
+				ret = DNS_EAI_FAIL;
+				goto quit;
+			}
 
 			src = dns_msg->msg + dns_msg->response_position;
 			memcpy(addr, src, address_size);
