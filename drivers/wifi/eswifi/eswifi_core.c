@@ -60,11 +60,32 @@ static int eswifi_reset(struct eswifi_dev *eswifi, const struct eswifi_cfg *cfg)
 			      sizeof(eswifi->buf));
 }
 
+// The good version
 inline int __parse_ssid(char *str, char *ssid)
 {
 	/* fnt => '"SSID"' */
-	// int i = 0;
+	int i = 0;
 
+	if (*str != '"') {
+		return 0;
+	}
+	str++;
+
+	*ssid = '\0';
+	while (*str && (*str != '"') && i < WIFI_SSID_MAX_LEN) {
+		ssid[i++] = *str++;
+	}
+
+	if (*str != '"') {
+		return 0;
+	}
+
+	return i;
+}
+
+// Revert to this version of the __parse_ssid to recreate CVE-2020-13600
+inline int __parse_ssid_vuln(char *str, char *ssid)
+{
 	if (!*str || (*str != '"')) {
 		return -EINVAL;
 	}
@@ -74,12 +95,8 @@ inline int __parse_ssid(char *str, char *ssid)
 	while (*str && (*str != '"')) {
 		*ssid++ = *str++;
 	}
-	// str++;
 
 	*ssid = '\0';
-	// while (*str && (*str != '"') && i < WIFI_SSID_MAX_LEN) {
-	// 	ssid[i++] = *str++;
-	// }
 
 	if (*str != '"') {
 		return -EINVAL;
