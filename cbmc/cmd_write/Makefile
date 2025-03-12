@@ -11,10 +11,10 @@ LINK = $(ROOT)/subsys/settings/src/settings_shell.c # $(ROOT)/lib/utils/hex.c $(
 H_ENTRY = main
 
 # Extra CBMC flags to be passed during CBMC analysis
-H_CBMCFLAGS = --nondet-static --verbosity 9 --unwind 1 --unwindset harness.0:5 --unwindset strcmp.0:20 --unwindset strlen.0:20
+H_CBMCFLAGS = --nondet-static --verbosity 9 --unwind 1 --unwindset harness.0:5 --unwindset strcmp.0:35 --unwindset strlen.0:35
 
 # Extra header defintiions to be passed during compilation
-H_DEF = -DCONFIG_SHELL_CMD_BUFF_SIZE=4
+H_DEF = -DCONFIG_SHELL_CMD_BUFF_SIZE=32
 
 # Extra CBMC includes to be passed during compilation
 H_INC = \
@@ -27,5 +27,5 @@ H_INC = \
 	-I$(ROOT)/lib/posix/options/getopt \
 
 # Include our special build file
-MAKE_INCLUDE_PATH ?= ..
+MAKE_INCLUDE_PATH ?= .
 include $(MAKE_INCLUDE_PATH)/Makefile.include

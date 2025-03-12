@@ -23,7 +23,7 @@ char *valid_string() {
 
 	// Won't be zero:
 
-	__CPROVER_assume(size > 0 && size < 20);
+	__CPROVER_assume(size > 0 && size < 40);
 
 	// Allocate data:
 
