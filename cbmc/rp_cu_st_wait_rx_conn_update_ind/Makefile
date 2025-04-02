@@ -34,5 +34,5 @@ H_INC = \
 	-Ibuild/zephyr/include/generated
 
 # Include our special build file
-MAKE_INCLUDE_PATH ?= ..
+MAKE_INCLUDE_PATH ?= .
 include $(MAKE_INCLUDE_PATH)/Makefile.include
