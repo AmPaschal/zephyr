@@ -4575,7 +4575,7 @@ static void gatt_find_info_rsp(struct bt_conn *conn, int err,
 			       const void *pdu, uint16_t length,
 			       void *user_data)
 {
-	const struct bt_att_find_info_rsp *rsp;
+	const struct bt_att_find_info_rsp *rsp = pdu;
 	struct bt_gatt_discover_params *params = user_data;
 	uint16_t handle = 0U;
 	uint16_t len;
@@ -4597,12 +4597,6 @@ static void gatt_find_info_rsp(struct bt_conn *conn, int err,
 		goto done;
 	}
 
-	if (length < sizeof(*rsp)) {
-		LOG_WRN("Parse err");
-		goto done;
-	}
-
-	rsp = pdu;
 
 	/* Data can be either in UUID16 or UUID128 */
 	switch (rsp->format) {

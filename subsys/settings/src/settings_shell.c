@@ -170,41 +170,33 @@ static int cmd_write(const struct shell *shell_ptr, size_t argc, char *argv[])
 {
 	int err;
 	uint8_t buffer[CONFIG_SHELL_CMD_BUFF_SIZE / 2];
-	const void *value;
-	size_t value_len = 0;
+	size_t buffer_len = 0;
 	enum settings_value_types value_type = SETTINGS_VALUE_HEX;
-
 	if (argc > 3) {
 		err = settings_parse_type(argv[1], &value_type);
 		if (err) {
 			shell_error(shell_ptr, "Invalid type: %s", argv[1]);
-			return -EINVAL;
+			return err;
 		}
 	}
-
 	switch (value_type) {
 	case SETTINGS_VALUE_HEX:
-		value = buffer;
-		value_len = hex2bin(argv[argc - 1], strlen(argv[argc - 1]), buffer, sizeof(buffer));
+		buffer_len = hex2bin(argv[argc - 1], strlen(argv[argc - 1]),
+			buffer, sizeof(buffer));
 		break;
 	case SETTINGS_VALUE_STRING:
-		value = argv[argc - 1];
-		value_len = strlen(argv[argc - 1]);
+		buffer_len = strlen(argv[argc - 1]) + 1;
+		memcpy(buffer, argv[argc - 1], buffer_len);
 		break;
 	}
-
-	if (value_len == 0) {
+	if (buffer_len == 0) {
 		shell_error(shell_ptr, "Failed to parse value");
 		return -EINVAL;
 	}
-
-	err = settings_save_one(argv[argc - 2], value, value_len);
-
+	err = settings_save_one(argv[argc - 2], buffer, buffer_len);
 	if (err) {
 		shell_error(shell_ptr, "Failed to write setting: %d", err);
-		err = -ENOEXEC;
 	}
-
 	return err;
 }
 

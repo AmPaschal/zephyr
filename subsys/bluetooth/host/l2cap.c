@@ -1613,13 +1613,6 @@ static void le_ecred_conn_req(struct bt_l2cap *l2cap, uint8_t ident,
 	req = net_buf_pull_mem(buf, sizeof(*req));
 	req_cid_count = buf->len / sizeof(scid);
 
-	if (buf->len > sizeof(dcid)) {
-		LOG_ERR("Too large LE conn req packet size");
-		req_cid_count = BT_L2CAP_ECRED_CHAN_MAX_PER_REQ;
-		result = BT_L2CAP_LE_ERR_INVALID_PARAMS;
-		goto response;
-	}
-
 	psm = sys_le16_to_cpu(req->psm);
 	mtu = sys_le16_to_cpu(req->mtu);
 	mps = sys_le16_to_cpu(req->mps);
@@ -2727,12 +2720,6 @@ static void l2cap_chan_le_recv(struct bt_l2cap_le_chan *chan,
 	/* Check if segments already exist */
 	if (chan->_sdu) {
 		l2cap_chan_le_recv_seg(chan, buf);
-		return;
-	}
-
-	if (buf->len < 2) {
-		LOG_WRN("Too short data packet");
-		bt_l2cap_chan_disconnect(&chan->chan);
 		return;
 	}
 

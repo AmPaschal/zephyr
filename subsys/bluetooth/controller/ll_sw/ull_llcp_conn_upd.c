@@ -606,14 +606,6 @@ static void lp_cu_st_wait_rx_conn_update_ind(struct ll_conn *conn, struct proc_c
 	case LP_CU_EVT_CONN_UPDATE_IND:
 		llcp_pdu_decode_conn_update_ind(ctx, param);
 
-		/* Invalid PDU, mark the connection for termination */
-		if (!cu_check_conn_ind_parameters(conn, ctx)) {
-			llcp_rr_set_incompat(conn, INCOMPAT_NO_COLLISION);
-			conn->llcp_terminate.reason_final = BT_HCI_ERR_INVALID_LL_PARAM;
-			lp_cu_complete(conn, ctx);
-			break;
-		}
-
 		llcp_rr_set_incompat(conn, INCOMPAT_RESERVED);
 
 		/* Keep RX node to use for NTF */
@@ -1288,28 +1280,20 @@ static void rp_cu_st_wait_rx_conn_update_ind(struct ll_conn *conn, struct proc_c
 			llcp_pdu_decode_conn_update_ind(ctx, param);
 
 			/* Valid PDU */
-			if (cu_check_conn_ind_parameters(conn, ctx)) {
-				uint16_t event_counter = ull_conn_event_counter(conn);
+			if (is_instant_not_passed(ctx->data.cu.instant,
+						  ull_conn_event_counter(conn))) {
 
-				if (is_instant_not_passed(ctx->data.cu.instant, event_counter)) {
-					/* Keep RX node to use for NTF */
-					llcp_rx_node_retain(ctx);
+				llcp_rx_node_retain(ctx);
 
-					ctx->state = RP_CU_STATE_WAIT_INSTANT;
-
-					/* In case we only just received it in time */
-					rp_cu_check_instant_rx_conn_update_ind(conn, ctx, evt,
-									       param);
-					break;
-				}
-
-				conn->llcp_terminate.reason_final = BT_HCI_ERR_INSTANT_PASSED;
+				ctx->state = RP_CU_STATE_WAIT_INSTANT;
+				/* In case we only just received it in time */
+				rp_cu_check_instant(conn, ctx, evt, param);
 			} else {
-				conn->llcp_terminate.reason_final = BT_HCI_ERR_INVALID_LL_PARAM;
+				conn->llcp_terminate.reason_final = BT_HCI_ERR_INSTANT_PASSED;
+				llcp_rr_complete(conn);
+				ctx->state = RP_CU_STATE_IDLE;
 			}
 
-			llcp_rr_complete(conn);
-			ctx->state = RP_CU_STATE_IDLE;
 			break;
 		default:
 			/* Unknown role */

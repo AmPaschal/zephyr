@@ -192,15 +192,7 @@ void ffa_run_pending_op(void)
 static bool is_mount_point(const char *path)
 {
 	char dir_path[PATH_MAX];
-	size_t len;
-
-	len = strlen(path);
-	if (len >= sizeof(dir_path)) {
-		return false;
-	}
-
-	memcpy(dir_path, path, len);
-	dir_path[len] = '\0';
+	sprintf(dir_path, "%s", path);
 	return strcmp(dirname(dir_path), "/") == 0;
 }
 
@@ -342,15 +334,8 @@ static int fuse_fs_access_readdir(const char *path, void *buf, fuse_fill_dir_t f
 		 * directory but FUSE strips the trailing slashes from
 		 * directory names so add it back.
 		 */
-		char mount_path[PATH_MAX] = {0};
-		size_t len = strlen(path);
-
-		if (len >= (PATH_MAX - 2)) {
-			return -ENOMEM;
-		}
-
-		memcpy(mount_path, path, len);
-		mount_path[len] = '/';
+		char mount_path[PATH_MAX];
+		sprintf(mount_path, "%s/", path);
 		err = queue_op(OP_READDIR_START, (void *)mount_path);
 	} else {
 		err = queue_op(OP_READDIR_START, (void *)path);

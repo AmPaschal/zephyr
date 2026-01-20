@@ -176,7 +176,7 @@ static int imx_mu_ipm_send(const struct device *dev, int wait, uint32_t id,
 		return -EINVAL;
 	}
 
-	if ((size < 0) || (size > CONFIG_IPM_IMX_MAX_DATA_SIZE)) {
+	if ((size > CONFIG_IPM_IMX_MAX_DATA_SIZE)) {
 		return -EMSGSIZE;
 	}
 

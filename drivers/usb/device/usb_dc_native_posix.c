@@ -360,10 +360,6 @@ int usb_dc_ep_write(const uint8_t ep, const uint8_t *const data,
 		uint8_t ep_idx = USB_EP_GET_IDX(ep);
 		struct usb_ep_ctrl_prv *ctrl = &usbip_ctrl.in_ep_ctrl[ep_idx];
 
-		if (data_len > ARRAY_SIZE(ctrl->buf)) {
-			return -EINVAL;
-		}
-
 		memcpy(ctrl->buf, data, data_len);
 		ctrl->buf_len = data_len;
 	}

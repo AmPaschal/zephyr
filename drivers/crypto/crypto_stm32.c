@@ -95,10 +95,8 @@ typedef status_t (*hal_cryp_aes_op_func_t)(CRYP_HandleTypeDef *hcryp, uint8_t *i
 static int copy_words_adjust_endianness(uint8_t *dst_buf, int dst_len, const uint8_t *src_buf,
 					int src_len)
 {
-	if ((dst_len < src_len) || ((dst_len % 4) != 0)) {
-		LOG_ERR("Buffer length error");
-		return -EINVAL;
-	}
+	__ASSERT_NO_MSG(dst_len >= src_len);
+	__ASSERT_NO_MSG((dst_len % 4) == 0);
 
 	memcpy(dst_buf, src_buf, src_len);
 

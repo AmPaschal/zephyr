@@ -31,7 +31,7 @@ static struct k_fifo rndis_tx_queue;
 
 /* Serialize RNDIS command queue for later processing */
 #define CFG_RNDIS_CMD_BUF_COUNT	2
-#define CFG_RNDIS_CMD_BUF_SIZE	CONFIG_USB_REQUEST_BUFFER_SIZE
+#define CFG_RNDIS_CMD_BUF_SIZE	512
 NET_BUF_POOL_DEFINE(rndis_cmd_pool, CFG_RNDIS_CMD_BUF_COUNT,
 		    CFG_RNDIS_CMD_BUF_SIZE, 0, NULL);
 static struct k_fifo rndis_cmd_queue;
@@ -835,11 +835,6 @@ static int handle_encapsulated_rsp(uint8_t **data, uint32_t *len)
 	}
 
 	*len = buf->len;
-	if (*len > CONFIG_USB_REQUEST_BUFFER_SIZE) {
-		LOG_ERR("Response too long %u, truncating to %u", buf->len,
-			CONFIG_USB_REQUEST_BUFFER_SIZE);
-		*len = CONFIG_USB_REQUEST_BUFFER_SIZE;
-	}
 
 	if (VERBOSE_DEBUG) {
 		net_hexdump("RSP <", buf->data, buf->len);

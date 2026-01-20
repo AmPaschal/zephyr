@@ -917,10 +917,7 @@ static inline int send_sf(struct isotp_send_ctx *sctx)
 		frame.data[index++] = ISOTP_PCI_TYPE_SF | len;
 	}
 
-	if (len > sctx->tx_addr.dl - index) {
-		LOG_ERR("SF len does not fit DL");
-		return -ENOSPC;
-	}
+	__ASSERT_NO_MSG(len <= ISOTP_CAN_DL - index);
 
 	memcpy(&frame.data[index], data, len);
 

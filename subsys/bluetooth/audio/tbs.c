@@ -2773,7 +2773,7 @@ static void tbs_inst_remote_incoming(struct tbs_inst *inst, const char *to, cons
 
 	if (friendly_name) {
 		inst->friendly_name.call_index = call->index;
-		utf8_lcpy(inst->friendly_name.uri, friendly_name, sizeof(inst->friendly_name.uri));
+		(void)strcpy(inst->friendly_name.uri, friendly_name);
 	} else {
 		inst->friendly_name.call_index = BT_TBS_FREE_CALL_INDEX;
 	}
