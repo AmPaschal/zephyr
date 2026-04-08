@@ -16,6 +16,9 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 #include <errno.h>
 #include <stddef.h>
 #include <string.h>
+#if defined(CBMC)
+#include <stdlib.h>
+#endif
 #include <zephyr/sys/byteorder.h>
 
 #include <zephyr/net_buf.h>
@@ -360,19 +363,64 @@ success:
 	return buf;
 }
 
+#if defined(CBMC)
+static struct net_buf *net_buf_alloc_fixed_cbmc_model(struct net_buf_pool *pool)
+{
+	size_t struct_size =
+		ROUND_UP(sizeof(struct net_buf) + pool->user_data_size,
+			 __alignof__(struct net_buf));
+	struct net_buf *buf = malloc(struct_size);
+
+	if (buf == NULL) {
+		return NULL;
+	}
+
+	memset(buf, 0, struct_size);
+
+	if (pool->alloc->max_alloc_size != 0U) {
+		buf->__buf = malloc(pool->alloc->max_alloc_size);
+		if (buf->__buf == NULL) {
+			free(buf);
+			return NULL;
+		}
+	}
+
+	buf->frags = NULL;
+	buf->ref = 1U;
+	buf->flags = 0U;
+	buf->pool_id = 0U;
+	buf->user_data_size = pool->user_data_size;
+	buf->size = pool->alloc->max_alloc_size;
+	net_buf_reset(buf);
+
+	return buf;
+}
+#endif
 #if defined(CONFIG_NET_BUF_LOG)
 struct net_buf *net_buf_alloc_fixed_debug(struct net_buf_pool *pool,
 					  k_timeout_t timeout, const char *func,
 					  int line)
 {
+#if defined(CBMC)
+	(void)timeout;
+	(void)func;
+	(void)line;
+	return net_buf_alloc_fixed_cbmc_model(pool);
+#else
 	return net_buf_alloc_len_debug(pool, pool->alloc->max_alloc_size, timeout, func,
 				       line);
+#endif
 }
 #else
 struct net_buf *net_buf_alloc_fixed(struct net_buf_pool *pool,
 				    k_timeout_t timeout)
 {
+#if defined(CBMC)
+	(void)timeout;
+	return net_buf_alloc_fixed_cbmc_model(pool);
+#else
 	return net_buf_alloc_len(pool, pool->alloc->max_alloc_size, timeout);
+#endif
 }
 #endif
 
