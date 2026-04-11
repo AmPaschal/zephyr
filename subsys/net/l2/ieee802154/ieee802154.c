@@ -570,10 +570,6 @@ static int ieee802154_send(struct net_if *iface, struct net_pkt *pkt)
 			pkt_buf = pkt_buf->frags;
 		}
 #else
-		if (ll_hdr_len + pkt_buf->len + authtag_len > IEEE802154_MTU) {
-			NET_ERR("Frame too long: %d", pkt_buf->len);
-			return -EINVAL;
-		}
 		net_buf_add_mem(frame_buf, pkt_buf->data, pkt_buf->len);
 		pkt_buf = pkt_buf->frags;
 #endif /* CONFIG_NET_L2_IEEE802154_FRAGMENT */
