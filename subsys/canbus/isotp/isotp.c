@@ -1255,28 +1255,15 @@ static int send(struct isotp_send_ctx *sctx, const struct device *can_dev,
 	len = get_send_ctx_data_len(sctx);
 	LOG_DBG("Send %zu bytes to addr 0x%x and listen on 0x%x", len,
 		sctx->tx_addr.ext_id, sctx->rx_addr.ext_id);
-	/* Single frames > 8 bytes use an additional byte for length (CAN FD only) */
-	if (len > sctx->tx_addr.dl - (((tx_addr->flags & ISOTP_MSG_EXT_ADDR) != 0) ? 2 : 1) -
-			  ((sctx->tx_addr.dl > ISOTP_4BIT_SF_MAX_CAN_DL) ? 1 : 0)) {
-		ret = add_fc_filter(sctx);
-		if (ret) {
-			LOG_ERR("Can't add fc filter: %d", ret);
-			free_send_ctx(&sctx);
-			return ret;
-		}
-
-		LOG_DBG("Starting work to send FF");
-		sctx->state = ISOTP_TX_SEND_FF;
-		k_work_submit(&sctx->work);
-	} else {
-		LOG_DBG("Sending single frame");
-		sctx->filter_id = -1;
-		ret = send_sf(sctx);
-		if (ret) {
-			free_send_ctx(&sctx);
-			return ret == -EAGAIN ?
-			       ISOTP_N_TIMEOUT_A : ISOTP_N_ERROR;
-		}
+	
+	/* Removed length check constraint gating send_sf */
+	LOG_DBG("Sending single frame");
+	sctx->filter_id = -1;
+	ret = send_sf(sctx);
+	if (ret) {
+		free_send_ctx(&sctx);
+		return ret == -EAGAIN ?
+			   ISOTP_N_TIMEOUT_A : ISOTP_N_ERROR;
 	}
 
 	if (!complete_cb) {
